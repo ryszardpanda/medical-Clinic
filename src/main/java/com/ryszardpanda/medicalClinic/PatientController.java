@@ -2,7 +2,6 @@ package com.ryszardpanda.medicalClinic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +40,6 @@ public class PatientController {
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail
     @PutMapping("/patients/{email}")
     public Patient updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        Patient patient = patientService.updatePatient(email, updatedPatient);
-        return patient;
+        return patientService.updatePatient(email, updatedPatient);
     }
 }
