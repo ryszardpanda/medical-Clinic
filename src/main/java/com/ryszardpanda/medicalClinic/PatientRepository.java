@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,12 +22,11 @@ public class PatientRepository {
         return patient;
     }
 
-    public Patient getPatientByEmail(String email) {
+    public Optional<Patient> getPatientByEmail(String email) {
         // Zakładam, że email jest unikalny, więc szukamy pierwszego pasującego
         return patients.stream()
                 .filter(patient -> patient.getEmail().equalsIgnoreCase(email))
-                .findFirst()
-                .orElse(null); // Zwraca null, jeśli pacjent nie został znaleziony
+                .findFirst();
     }
 
     public boolean deletePatientByEmail(String email) {
@@ -34,15 +34,12 @@ public class PatientRepository {
     }
 
     public Patient updatePatient(String email, Patient updatedPatient) {
-        for (Patient patient : patients) {
-            if (patient.getEmail().equalsIgnoreCase(email)) {
-                // Aktualizacja danych pacjenta
-                patient.setName(updatedPatient.getName());
-                patient.setSurname(updatedPatient.getSurname());
-                patient.setEmail(updatedPatient.getEmail());
-                return patient; // Zwraca zaktualizowanego pacjenta
-            }
-        }
-        return null; // Jeśli pacjent nie został znaleziony, zwraca null
+        Optional<Patient> optionalPatient = getPatientByEmail(email);
+        optionalPatient.ifPresent(patient -> {
+            patient.setName(updatedPatient.getName());
+            patient.setSurname(updatedPatient.getSurname());
+            patient.setEmail(updatedPatient.getEmail());
+        });
+        return optionalPatient.orElse(null);
     }
 }

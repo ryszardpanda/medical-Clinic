@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,13 +17,11 @@ public class PatientService {
         return patientRepository.getPatients();
     }
 
-    public List<Patient> addPatients(List<Patient> patients) {
-        return patients.stream()
-                .map(patientRepository::addPatient)
-                .collect(Collectors.toList());
+    public Patient addPatient(Patient patients) {
+        return patientRepository.addPatient(patients);
     }
 
-    public Patient getPatientByEmail( String email) {
+    public Optional<Patient> getPatientByEmail(String email) {
         return patientRepository.getPatientByEmail(email);
     }
 
