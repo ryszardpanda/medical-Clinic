@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service //przechowują logikę aplikacji
 @RequiredArgsConstructor
 public class PatientService {
 
@@ -20,8 +20,8 @@ public class PatientService {
         return patientRepository.addPatient(patients);
     }
 
-    public Optional<Patient> getPatientByEmail(String email) {
-        return patientRepository.getPatientByEmail(email);
+    public Patient getPatientByEmail(String email) {
+        return patientRepository.getPatientByEmail(email).orElseThrow(() -> new IllegalArgumentException("Patient with given email doesnt exist"));
     }
 
     public boolean deletePatientByEmail(String email) {
@@ -29,7 +29,7 @@ public class PatientService {
     }
 
     public Patient updatePatient(String email, Patient updatedPatient) {
-        return patientRepository.updatePatient(email, updatedPatient); // Wywołanie metody z repozytorium
+        return patientRepository.updatePatient(email, updatedPatient).orElseThrow(() -> new IllegalArgumentException("Patient with given email doesnt exist"));  // Wywołanie metody z repozytorium
     }
 
 }

@@ -25,7 +25,7 @@ public class PatientController {
     }
 
     @GetMapping("/patients/{email}")
-    public Optional<Patient> getPatientByEmail(@PathVariable String email) {
+    public Patient getPatientByEmail(@PathVariable String email) {
         return patientService.getPatientByEmail(email);
     }
 
