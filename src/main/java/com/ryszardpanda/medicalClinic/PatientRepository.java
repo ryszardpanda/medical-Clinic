@@ -36,9 +36,21 @@ public class PatientRepository {
     public Optional<Patient> updatePatient(String email, Patient updatedPatient) {
         Optional<Patient> optionalPatient = getPatientByEmail(email);
         optionalPatient.ifPresent(patient -> {
-            patient.setName(updatedPatient.getName());
-            patient.setSurname(updatedPatient.getSurname());
+            patient.setFirstName(updatedPatient.getFirstName());
+            patient.setLastName(updatedPatient.getLastName());
             patient.setEmail(updatedPatient.getEmail());
+            patient.setPassword(updatedPatient.getPassword());
+            patient.setBirthday(updatedPatient.getBirthday());
+            patient.setIdCardNo(updatedPatient.getIdCardNo());
+            patient.setPhoneNumber(updatedPatient.getPhoneNumber());
+        });
+        return optionalPatient;
+    }
+
+    public Optional<Patient> updatePassword(String email, Patient updatedPassword) {
+        Optional<Patient> optionalPatient = getPatientByEmail(email);
+        optionalPatient.ifPresent(patient -> {
+            patient.setPassword(updatedPassword.getPassword());
         });
         return optionalPatient;
     }

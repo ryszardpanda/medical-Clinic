@@ -32,4 +32,8 @@ public class PatientService {
         return patientRepository.updatePatient(email, updatedPatient).orElseThrow(() -> new IllegalArgumentException("Patient with given email doesnt exist"));  // Wywołanie metody z repozytorium
     }
 
+    public Patient updatePassword(String email, Patient updatedPassword) {
+        return patientRepository.updatePatient(email, updatedPassword).orElseThrow(() -> new IllegalArgumentException("Patient with given email doesnt exist"));  // Wywołanie metody z repozytorium
+    }
+
 }
