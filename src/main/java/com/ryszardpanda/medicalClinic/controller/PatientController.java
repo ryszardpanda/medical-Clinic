@@ -1,11 +1,12 @@
-package com.ryszardpanda.medicalClinic;
+package com.ryszardpanda.medicalClinic.controller;
 
+import com.ryszardpanda.medicalClinic.service.PatientService;
+import com.ryszardpanda.medicalClinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController // mowie ze to jest Bean Springowy oraz kontroler -> czyli tutaj bede przechwytywal zapytania
 @RequiredArgsConstructor

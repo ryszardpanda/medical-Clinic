@@ -1,5 +1,6 @@
-package com.ryszardpanda.medicalClinic;
+package com.ryszardpanda.medicalClinic.repository;
 
+import com.ryszardpanda.medicalClinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

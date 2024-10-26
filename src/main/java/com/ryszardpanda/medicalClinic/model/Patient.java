@@ -1,4 +1,4 @@
-package com.ryszardpanda.medicalClinic;
+package com.ryszardpanda.medicalClinic.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
