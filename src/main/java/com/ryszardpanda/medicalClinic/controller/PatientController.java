@@ -4,6 +4,7 @@ import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
 import com.ryszardpanda.medicalClinic.service.PatientService;
 import com.ryszardpanda.medicalClinic.model.Patient;
+import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,24 +15,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientController {
     private final PatientService patientService;
+    private final PatientMapper patientMapper;
 
     // to jest po prostu definicja endpointu na sciezce "/patients"
     // GET /patients
-    @GetMapping("/patients") //patientDTO trzeba w service takto tez zamienic?
+    @GetMapping("/patients")
     public List<PatientDTO> getPatients() {
         return patientService.getPatients().stream()
-                .map(PatientMapper::patientToDTO)
+                .map(patientMapper::patientToDTO)
                 .toList();
     }
 
     @PostMapping("/patients")
     private PatientDTO addPatient(@RequestBody Patient patient) {
-        return PatientMapper.patientToDTO(patientService.addPatient(patient));
+        return patientMapper.patientToDTO(patientService.addPatient(patient));
     }
 
     @GetMapping("/patients/{email}")
     public PatientDTO getPatientByEmail(@PathVariable String email) {
-        return PatientMapper.patientToDTO(patientService.getPatientByEmail(email));
+        return patientMapper.patientToDTO(patientService.getPatientByEmail(email));
     }
 
     // Metoda DELETE, która usunie pacjenta na podstawie adresu e-mail
@@ -45,11 +47,11 @@ public class PatientController {
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail
     @PutMapping("/patients/{email}")
     public PatientDTO updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        return PatientMapper.patientToDTO(patientService.updatePatient(email, updatedPatient));
+        return patientMapper.patientToDTO(patientService.updatePatient(email, updatedPatient));
     }
 
     @PatchMapping("/patients/{email}")
     public PatientDTO updatePassword(@PathVariable String email, @RequestBody Patient updatedPassword) {
-        return PatientMapper.patientToDTO(patientService.updatePassword(email, updatedPassword));
+        return patientMapper.patientToDTO(patientService.updatePassword(email, updatedPassword));
     }
 }
