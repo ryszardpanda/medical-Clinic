@@ -1,5 +1,7 @@
 package com.ryszardpanda.medicalClinic.controller;
 
+import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
+import com.ryszardpanda.medicalClinic.model.PatientDTO;
 import com.ryszardpanda.medicalClinic.service.PatientService;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import lombok.RequiredArgsConstructor;
@@ -15,19 +17,21 @@ public class PatientController {
 
     // to jest po prostu definicja endpointu na sciezce "/patients"
     // GET /patients
-    @GetMapping("/patients")
-    public List<Patient> getPatients() {
-        return patientService.getPatients();
+    @GetMapping("/patients") //patientDTO trzeba w service takto tez zamienic?
+    public List<PatientDTO> getPatients() {
+        return patientService.getPatients().stream()
+                .map(PatientMapper::patientToDTO)
+                .toList();
     }
 
     @PostMapping("/patients")
-    public Patient addPatients(@RequestBody Patient patients) {
-        return patientService.addPatient(patients);
+    private PatientDTO addPatient(@RequestBody Patient patient) {
+        return PatientMapper.patientToDTO(patientService.addPatient(patient));
     }
 
     @GetMapping("/patients/{email}")
-    public Patient getPatientByEmail(@PathVariable String email) {
-        return patientService.getPatientByEmail(email);
+    public PatientDTO getPatientByEmail(@PathVariable String email) {
+        return PatientMapper.patientToDTO(patientService.getPatientByEmail(email));
     }
 
     // Metoda DELETE, która usunie pacjenta na podstawie adresu e-mail
@@ -40,12 +44,12 @@ public class PatientController {
 
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail
     @PutMapping("/patients/{email}")
-    public Patient updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        return patientService.updatePatient(email, updatedPatient);
+    public PatientDTO updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
+        return PatientMapper.patientToDTO(patientService.updatePatient(email, updatedPatient));
     }
 
     @PatchMapping("/patients/{email}")
-    public Patient updatePassword(@PathVariable String email, @RequestBody Patient updatedPassword) {
-        return patientService.updatePassword(email, updatedPassword);
+    public PatientDTO updatePassword(@PathVariable String email, @RequestBody Patient updatedPassword) {
+        return PatientMapper.patientToDTO(patientService.updatePassword(email, updatedPassword));
     }
 }
