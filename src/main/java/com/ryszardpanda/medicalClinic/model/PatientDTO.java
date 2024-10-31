@@ -14,4 +14,5 @@ public class PatientDTO {
     private String idCardNo;
     private String phoneNumber;
     private LocalDate birthday;
+    private String fullName;
 }
