@@ -15,6 +15,13 @@ public class MedicalClinicExceptionHandler
     public ResponseEntity<Object> handlePatientNotFoundException(
             Exception ex, WebRequest request) {
         return new ResponseEntity<Object>(
-                "Nie znaleziono danego użytkownika", new HttpHeaders(), HttpStatus.NOT_FOUND);
+                new ErrorMessage("Nie znaleziono danego użytkownika"), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<Object> handleDefaultException(
+            Exception ex, WebRequest request) {
+        return new ResponseEntity<Object>(
+                new ErrorMessage("Unknown Error"), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
