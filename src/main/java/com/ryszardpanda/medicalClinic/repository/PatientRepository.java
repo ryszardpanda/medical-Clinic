@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository // służy do oznaczania komponentów, które pełnią rolę warstwy dostępu do danych
+@Repository
 @RequiredArgsConstructor
 public class PatientRepository {
 
@@ -40,19 +40,15 @@ public class PatientRepository {
             patient.setFirstName(updatedPatient.getFirstName());
             patient.setLastName(updatedPatient.getLastName());
             patient.setEmail(updatedPatient.getEmail());
-            patient.setPassword(updatedPatient.getPassword());
-            patient.setBirthday(updatedPatient.getBirthday());
-            patient.setIdCardNo(updatedPatient.getIdCardNo());
             patient.setPhoneNumber(updatedPatient.getPhoneNumber());
+            patient.setBirthday(updatedPatient.getBirthday());
         });
         return optionalPatient;
     }
 
     public Optional<Patient> updatePassword(String email, Patient updatedPassword) {
         Optional<Patient> optionalPatient = getPatientByEmail(email);
-        optionalPatient.ifPresent(patient -> {
-            patient.setPassword(updatedPassword.getPassword());
-        });
+        optionalPatient.ifPresent(patient -> patient.setPassword(updatedPassword.getPassword()));
         return optionalPatient;
     }
 }
