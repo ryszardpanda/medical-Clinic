@@ -2,9 +2,10 @@ package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
+import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.service.PatientService;
 import com.ryszardpanda.medicalClinic.model.Patient;
-import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,8 @@ public class PatientController {
     }
 
     @PostMapping("/patients")
-    private PatientDTO addPatient(@RequestBody Patient patient) {
-        return patientMapper.patientToDTO(patientService.addPatient(patient));
+    private PatientEditDTO addPatient(@Valid @RequestBody PatientEditDTO patientEditDTO) {
+        return patientMapper.patientEditDtoToPatient(patientService.addPatient(patientEditDTO));
     }
 
     @GetMapping("/patients/{email}")
@@ -37,7 +38,6 @@ public class PatientController {
     }
 
     // Metoda DELETE, która usunie pacjenta na podstawie adresu e-mail
-    //nie ogarnalbym
     @DeleteMapping("/patients/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatientByEmail(@PathVariable String email) {
@@ -46,8 +46,8 @@ public class PatientController {
 
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail
     @PutMapping("/patients/{email}")
-    public PatientDTO updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        return patientMapper.patientToDTO(patientService.updatePatient(email, updatedPatient));
+    public PatientEditDTO updatePatient(@PathVariable String email, @Valid @RequestBody PatientEditDTO updatedPatientEditDTO) {
+        return patientMapper.patientEditDtoToPatient(patientService.updatePatient(email, updatedPatientEditDTO));
     }
 
     @PatchMapping("/patients/{email}")

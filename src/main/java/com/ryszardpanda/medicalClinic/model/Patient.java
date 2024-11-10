@@ -5,8 +5,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor /// chce miec konstruktor do wsystkich argumentow
-@Data // chce uzywac daty
+@AllArgsConstructor
+@Data
 public class Patient {
     private String firstName;
     private String lastName;
