@@ -40,6 +40,8 @@ public class PatientRepository {
             patient.setFirstName(updatedPatient.getFirstName());
             patient.setLastName(updatedPatient.getLastName());
             patient.setEmail(updatedPatient.getEmail());
+            patient.setPassword(updatedPatient.getPassword());
+            patient.setIdCardNo(patient.getIdCardNo());
             patient.setPhoneNumber(updatedPatient.getPhoneNumber());
             patient.setBirthday(updatedPatient.getBirthday());
         });

@@ -2,6 +2,7 @@ package com.ryszardpanda.medicalClinic.mapper;
 
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
+import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -18,4 +19,6 @@ public interface PatientMapper {
     }
 
     Patient dtoToPatient(PatientDTO patientDTO);
+    PatientEditDTO patientEditDtoToPatient(Patient patient);
+    Patient EditDtoToPatient (PatientEditDTO patientEditDTO);
 }

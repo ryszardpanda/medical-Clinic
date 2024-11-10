@@ -4,7 +4,9 @@ import com.ryszardpanda.medicalClinic.exceptions.EmailAlreadyInUse;
 import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.PatientIdAlreadyExist;
 import com.ryszardpanda.medicalClinic.exceptions.PatientNotFoundException;
+import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.Patient;
+import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,12 +19,14 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
 
     public List<Patient> getPatients() {
         return patientRepository.getPatients();
     }
 
-    public Patient addPatient(Patient patient) {
+    public Patient addPatient(PatientEditDTO patientEditDTO) {
+        Patient patient = patientMapper.EditDtoToPatient(patientEditDTO);
         validatePatientFields(patient);
         patientRepository.getPatientByEmail(patient.getEmail()).ifPresent(existingPatient -> {
             throw new EmailAlreadyInUse("Pacjent o takim emailu już istnieje", HttpStatus.CONFLICT);
@@ -41,10 +45,12 @@ public class PatientService {
         return patientRepository.deletePatientByEmail(email);
     }
 
-    public Patient updatePatient(String email, Patient updatedPatient) {
+    public Patient updatePatient(String email, PatientEditDTO updatedPatientEditDTO) {
+        Patient updatedPatient = patientMapper.EditDtoToPatient(updatedPatientEditDTO);
         Patient patient = patientRepository.getPatientByEmail(email).orElseThrow(() -> new PatientNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
-        if (!patient.getIdCardNo().equals(updatedPatient.getIdCardNo())) {
-            throw new PatientIdAlreadyExist("Nie można zmienić istniejącego numeru dowodu", HttpStatus.CONFLICT);
+        if (updatedPatientEditDTO.getIdCardNo() != null
+                && !patient.getIdCardNo().equals(updatedPatientEditDTO.getIdCardNo())) {
+            throw new PatientIdAlreadyExist("Nie można zmienić istniejącego numeru dowodu, proszę wprowadzić poprzedni numer: " + patient.getIdCardNo(), HttpStatus.CONFLICT);
         }
         return patientRepository.updatePatient(email, updatedPatient).orElseThrow(() -> new PatientNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
     }

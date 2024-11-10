@@ -1,4 +1,5 @@
 package com.ryszardpanda.medicalClinic.exceptions;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,22 +7,21 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.validation.FieldError;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-//usunąłem extends ResponseEntityExceptionHandler czy dobrze? Do porozmawiania
-public class MedicalClinicExceptionHandler
-       // extends ResponseEntityExceptionHandler {
-{
+public class MedicalClinicExceptionHandler {
     @ExceptionHandler({PatientNotFoundException.class})
     public ResponseEntity<ErrorMessage> handlePatientNotFoundException(
             PatientNotFoundException ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getStatus());
     }
+
     @ExceptionHandler({NoIdNumberException.class})
     public ResponseEntity<ErrorMessage> handleNoIdNumberException(
             NoIdNumberException ex) {
@@ -31,14 +31,14 @@ public class MedicalClinicExceptionHandler
 
     @ExceptionHandler({PatientIdAlreadyExist.class})
     public ResponseEntity<ErrorMessage> handlePatientIdAlreadyExist(
-            PatientIdAlreadyExist ex){
+            PatientIdAlreadyExist ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
     @ExceptionHandler({EmailAlreadyInUse.class})
     public ResponseEntity<ErrorMessage> handleEmailAlreadyInUse(
-            EmailAlreadyInUse ex){
+            EmailAlreadyInUse ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
@@ -58,7 +58,7 @@ public class MedicalClinicExceptionHandler
 
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleDefaultException(
-            Exception ex) {
+            RuntimeException ex) {
         return new ResponseEntity<Object>(
                 new ErrorMessage("Unknown Error"), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
