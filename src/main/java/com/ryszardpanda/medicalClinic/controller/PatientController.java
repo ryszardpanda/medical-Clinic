@@ -21,7 +21,7 @@ public class PatientController {
     // to jest po prostu definicja endpointu na sciezce "/patients"
     // GET /patients
     @GetMapping("/patients")
-    public List<PatientDTO> getPatients() {
+    public List<PatientDTO> getDoctors() {
         return patientService.getPatients().stream()
                 .map(patientMapper::patientToDTO)
                 .toList();

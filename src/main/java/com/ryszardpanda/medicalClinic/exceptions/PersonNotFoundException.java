@@ -4,11 +4,11 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class PatientNotFoundException extends RuntimeException{
+public class PersonNotFoundException extends RuntimeException{
 
     private final HttpStatus status;
 
-    public PatientNotFoundException(String message, HttpStatus status) {
+    public PersonNotFoundException(String message, HttpStatus status) {
         super(message);
         this.status = status;
     }
