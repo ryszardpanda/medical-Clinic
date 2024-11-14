@@ -3,6 +3,7 @@ package com.ryszardpanda.medicalClinic.repository;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +44,9 @@ public class DoctorRepository {
         return optionalDoctor;
     }
 
-    public Optional<Doctor> updatePassword(String email, Doctor updatedPassword){
+    public Optional<Doctor> updatePassword(String email, Doctor updatedPassword) {
         Optional<Doctor> optionalDoctor = getDoctorByEmail(email);
         optionalDoctor.ifPresent(doctor -> doctor.setPassword(updatedPassword.getPassword()));
         return optionalDoctor;
     }
-
 }

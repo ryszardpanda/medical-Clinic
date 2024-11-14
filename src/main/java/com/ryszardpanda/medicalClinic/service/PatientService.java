@@ -35,28 +35,31 @@ public class PatientService {
     }
 
     public Patient getPatientByEmail(String email) {
-        return patientRepository.getPatientByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID", HttpStatus.NOT_FOUND));
+        return patientRepository.getPatientByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
-    public boolean deletePatientByEmail(String email) {
+    public void deletePatientByEmail(String email) {
         if (!patientRepository.deletePatientByEmail(email)) {
             throw new PersonNotFoundException("Nie znaleziono pacjenta o takim ID", HttpStatus.NOT_FOUND);
         }
-        return patientRepository.deletePatientByEmail(email);
     }
 
     public Patient updatePatient(String email, PatientEditDTO updatedPatientEditDTO) {
         Patient updatedPatient = patientMapper.EditDtoToPatient(updatedPatientEditDTO);
-        Patient patient = patientRepository.getPatientByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID", HttpStatus.NOT_FOUND));
+        Patient patient = patientRepository.getPatientByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID",
+                HttpStatus.NOT_FOUND));
         if (updatedPatientEditDTO.getIdCardNo() != null
                 && !patient.getIdCardNo().equals(updatedPatientEditDTO.getIdCardNo())) {
             throw new PersonIdAlreadyExist("Nie można zmienić istniejącego numeru dowodu, proszę wprowadzić poprzedni numer: " + patient.getIdCardNo(), HttpStatus.CONFLICT);
         }
-        return patientRepository.updatePatient(email, updatedPatient).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
+        return patientRepository.updatePatient(email, updatedPatient).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
     public Patient updatePassword(String email, Patient updatedPassword) {
-        return patientRepository.updatePassword(email, updatedPassword).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
+        return patientRepository.updatePassword(email, updatedPassword).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
     private void validatePatientFields(Patient patient) {

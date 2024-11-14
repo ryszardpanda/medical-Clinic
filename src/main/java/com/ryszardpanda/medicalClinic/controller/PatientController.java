@@ -21,7 +21,7 @@ public class PatientController {
     // to jest po prostu definicja endpointu na sciezce "/patients"
     // GET /patients
     @GetMapping("/patients")
-    public List<PatientDTO> getDoctors() {
+    public List<PatientDTO> getPatients() {
         return patientService.getPatients().stream()
                 .map(patientMapper::patientToDTO)
                 .toList();
@@ -41,7 +41,7 @@ public class PatientController {
     @DeleteMapping("/patients/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatientByEmail(@PathVariable String email) {
-        boolean deleted = patientService.deletePatientByEmail(email);
+        patientService.deletePatientByEmail(email);
     }
 
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail

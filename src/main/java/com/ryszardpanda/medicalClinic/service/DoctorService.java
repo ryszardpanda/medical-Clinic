@@ -33,23 +33,25 @@ public class DoctorService {
     }
 
     public Doctor getDoctorByEmail(String email) {
-        return doctorRepository.getDoctorByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.", HttpStatus.NOT_FOUND));
+        return doctorRepository.getDoctorByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
+                HttpStatus.NOT_FOUND));
     }
 
-    public boolean deleteDoctorByEmail(String email) {
+    public void deleteDoctorByEmail(String email) {
         if (!doctorRepository.deleteDoctorByEmail(email)) {
             throw new PersonNotFoundException("Nie znaleziono pacjenta o takim ID", HttpStatus.NOT_FOUND);
         }
-        return doctorRepository.deleteDoctorByEmail(email);
     }
 
     public Doctor updateDoctor(String email, DoctorEditDTO doctorEditDTO) {
         Doctor updatedDoctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
-        return doctorRepository.updateDoctor(email, updatedDoctor).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
+        return doctorRepository.updateDoctor(email, updatedDoctor).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
     public Doctor updatePassword(String email, Doctor updatedPassword) {
-        return doctorRepository.updatePassword(email, updatedPassword).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID", HttpStatus.NOT_FOUND));
+        return doctorRepository.updatePassword(email, updatedPassword).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
     public void validateDoctorFields(Doctor doctor) {
