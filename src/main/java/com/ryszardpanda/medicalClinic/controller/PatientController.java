@@ -41,7 +41,7 @@ public class PatientController {
     @DeleteMapping("/patients/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatientByEmail(@PathVariable String email) {
-        boolean deleted = patientService.deletePatientByEmail(email);
+        patientService.deletePatientByEmail(email);
     }
 
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail

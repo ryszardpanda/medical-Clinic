@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class MedicalClinicExceptionHandler {
-    @ExceptionHandler({PatientNotFoundException.class})
+    @ExceptionHandler({PersonNotFoundException.class})
     public ResponseEntity<ErrorMessage> handlePatientNotFoundException(
-            PatientNotFoundException ex) {
+            PersonNotFoundException ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getStatus());
     }
@@ -29,9 +29,9 @@ public class MedicalClinicExceptionHandler {
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
-    @ExceptionHandler({PatientIdAlreadyExist.class})
+    @ExceptionHandler({PersonIdAlreadyExist.class})
     public ResponseEntity<ErrorMessage> handlePatientIdAlreadyExist(
-            PatientIdAlreadyExist ex) {
+            PersonIdAlreadyExist ex) {
         return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
