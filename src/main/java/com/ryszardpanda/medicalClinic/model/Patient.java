@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "PATIENTS")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "PATIENT_NAME", length = 50, nullable = false)
     private String firstName;
