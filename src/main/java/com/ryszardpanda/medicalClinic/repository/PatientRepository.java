@@ -47,7 +47,6 @@ public class PatientRepository {
         });
         return optionalPatient;
     }
-
     public Optional<Patient> updatePassword(String email, Patient updatedPassword) {
         Optional<Patient> optionalPatient = getPatientByEmail(email);
         optionalPatient.ifPresent(patient -> patient.setPassword(updatedPassword.getPassword()));
