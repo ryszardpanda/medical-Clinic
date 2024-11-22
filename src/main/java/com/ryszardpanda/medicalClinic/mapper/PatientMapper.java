@@ -19,6 +19,6 @@ public interface PatientMapper {
     }
 
     Patient dtoToPatient(PatientDTO patientDTO);
-    PatientEditDTO patientEditDtoToPatient(Patient patient);
-    Patient EditDtoToPatient (PatientEditDTO patientEditDTO);
+    PatientEditDTO patientToPatientEditDTO(Patient patient);
+    Patient patientEditDtoToPatient (PatientEditDTO patientEditDTO);
 }
