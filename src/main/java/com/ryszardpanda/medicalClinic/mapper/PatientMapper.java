@@ -1,5 +1,6 @@
 package com.ryszardpanda.medicalClinic.mapper;
 
+import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
@@ -19,6 +20,8 @@ public interface PatientMapper {
     }
 
     Patient dtoToPatient(PatientDTO patientDTO);
-    PatientEditDTO patientEditDtoToPatient(Patient patient);
-    Patient EditDtoToPatient (PatientEditDTO patientEditDTO);
+    PatientEditDTO patientToPatientEditDTO(Patient patient);
+    Patient patientEditDtoToPatient (PatientEditDTO patientEditDTO);
+    Patient changePasswordDTOToPatient(Patient changePasswordDTO);
+    ChangePasswordDTO patientToChangePasswordDTO(Patient patient);
 }

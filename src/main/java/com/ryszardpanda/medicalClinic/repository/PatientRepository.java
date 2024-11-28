@@ -1,55 +1,10 @@
 package com.ryszardpanda.medicalClinic.repository;
 
 import com.ryszardpanda.medicalClinic.model.Patient;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class PatientRepository {
-
-    private final List<Patient> patients;
-
-    public List<Patient> getPatients() {
-        return new ArrayList<>(patients);
-    }
-
-    public Patient addPatient(Patient patient) {
-        patients.add(patient);
-        return patient;
-    }
-
-    public Optional<Patient> getPatientByEmail(String email) {
-        // Zakładam, że email jest unikalny, więc szukamy pierwszego pasującego
-        return patients.stream()
-                .filter(patient -> patient.getEmail().equalsIgnoreCase(email))
-                .findFirst();
-    }
-
-    public boolean deletePatientByEmail(String email) {
-        return patients.removeIf(patient -> patient.getEmail().equalsIgnoreCase(email));
-    }
-
-    public Optional<Patient> updatePatient(String email, Patient updatedPatient) {
-        Optional<Patient> optionalPatient = getPatientByEmail(email);
-        optionalPatient.ifPresent(patient -> {
-            patient.setFirstName(updatedPatient.getFirstName());
-            patient.setLastName(updatedPatient.getLastName());
-            patient.setEmail(updatedPatient.getEmail());
-            patient.setPassword(updatedPatient.getPassword());
-            patient.setIdCardNo(patient.getIdCardNo());
-            patient.setPhoneNumber(updatedPatient.getPhoneNumber());
-            patient.setBirthday(updatedPatient.getBirthday());
-        });
-        return optionalPatient;
-    }
-    public Optional<Patient> updatePassword(String email, Patient updatedPassword) {
-        Optional<Patient> optionalPatient = getPatientByEmail(email);
-        optionalPatient.ifPresent(patient -> patient.setPassword(updatedPassword.getPassword()));
-        return optionalPatient;
-    }
+public interface PatientRepository extends JpaRepository<Patient, Long> {
+    Optional<Patient> findByEmail(String email);
 }

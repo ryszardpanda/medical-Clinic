@@ -1,7 +1,7 @@
 package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
-import com.ryszardpanda.medicalClinic.model.Doctor;
+import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.DoctorDTO;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
@@ -26,8 +26,8 @@ public class DoctorController {
     }
 
     @PostMapping("/doctors")
-    public DoctorEditDTO addDoctor(@Valid @RequestBody DoctorEditDTO doctorEditDTO) {
-        return doctorMapper.doctorToDoctorEditDTO(doctorService.addDoctor(doctorEditDTO));
+    public DoctorDTO addDoctor(@Valid @RequestBody DoctorEditDTO doctorEditDTO) {
+        return doctorMapper.doctorToDoctorDTO(doctorService.addDoctor(doctorEditDTO));
     }
 
     @GetMapping("/doctors/{email}")
@@ -42,12 +42,12 @@ public class DoctorController {
     }
 
     @PutMapping("/doctors/{email}")
-    public DoctorEditDTO updateDoctor(@PathVariable String email, @Valid @RequestBody DoctorEditDTO updatedDoctorEditDTO) {
-        return doctorMapper.doctorToDoctorEditDTO(doctorService.updateDoctor(email, updatedDoctorEditDTO));
+    public DoctorDTO updateDoctor(@PathVariable String email, @Valid @RequestBody DoctorEditDTO updatedDoctorEditDTO) {
+        return doctorMapper.doctorToDoctorDTO(doctorService.updateDoctor(email, updatedDoctorEditDTO));
     }
 
     @PatchMapping("/doctors/{email}")
-    public DoctorDTO updatePassword(@PathVariable String email, @RequestBody Doctor updatedPassword) {
-        return doctorMapper.doctorToDoctorDTO(doctorService.updatePassword(email, updatedPassword));
+    public void updatePassword(@PathVariable String email, @RequestBody ChangePasswordDTO updatedPassword) {
+        doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
     }
 }

@@ -18,7 +18,6 @@ public class PatientEditDTO {
     @Email(message = "Zły format email")
     @NotBlank(message = "Email nie może być puste, bądź być nullem")
     private String email;
-    @NotBlank(message = "Password nie może być puste, bądź być nullem")
     private String password;
     private String idCardNo;
     @NotBlank(message = "Telefon nie może być pusty, bądź być nullem")
