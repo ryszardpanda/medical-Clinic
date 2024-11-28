@@ -3,6 +3,7 @@ package com.ryszardpanda.medicalClinic.service;
 import com.ryszardpanda.medicalClinic.exceptions.EmailAlreadyInUse;
 import com.ryszardpanda.medicalClinic.exceptions.PersonNotFoundException;
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
+import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,39 +21,47 @@ public class DoctorService {
     private final DoctorMapper doctorMapper;
 
     public List<Doctor> getDoctors() {
-        return doctorRepository.getDoctors();
+        return doctorRepository.findAll();
     }
 
     public Doctor addDoctor(DoctorEditDTO doctorEditDTO) {
         Doctor doctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
         validateDoctorFields(doctor);
-        doctorRepository.getDoctorByEmail(doctor.getEmail())
-                .ifPresent(existingDoctor -> {
-                    throw new EmailAlreadyInUse("Doktor o takim emailu już istnieje", HttpStatus.CONFLICT);
-                });
-        return doctorRepository.addDoctor(doctor);
+        Optional<Doctor> existingDoctor = doctorRepository.findByEmail(doctorEditDTO.getEmail());
+        if (existingDoctor.isPresent()){
+            throw new EmailAlreadyInUse("Doktor o takim emailu już istnieje", HttpStatus.CONFLICT);
+        }
+        return doctorRepository.save(doctor);
     }
 
     public Doctor getDoctorByEmail(String email) {
-        return doctorRepository.getDoctorByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
+        return doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
                 HttpStatus.NOT_FOUND));
     }
 
     public void deleteDoctorByEmail(String email) {
-        if (!doctorRepository.deleteDoctorByEmail(email)) {
-            throw new PersonNotFoundException("Nie znaleziono pacjenta o takim ID", HttpStatus.NOT_FOUND);
-        }
+        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
+                HttpStatus.NOT_FOUND));
+        doctorRepository.delete(doctor);
     }
 
     public Doctor updateDoctor(String email, DoctorEditDTO doctorEditDTO) {
         Doctor updatedDoctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
-        return doctorRepository.updateDoctor(email, updatedDoctor).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
                 HttpStatus.NOT_FOUND));
+        doctor.setFirstName(updatedDoctor.getFirstName());
+        doctor.setLastName(updatedDoctor.getLastName());
+        doctor.setEmail(updatedDoctor.getEmail());
+        doctor.setSpecialization(updatedDoctor.getSpecialization());
+
+        return doctorRepository.save(doctor);
     }
 
-    public Doctor updatePassword(String email, Doctor updatedPassword) {
-        return doctorRepository.updatePassword(email, updatedPassword).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+    public Doctor updatePassword(String email, ChangePasswordDTO updatedPassword) {
+        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
                 HttpStatus.NOT_FOUND));
+        doctor.setPassword(updatedPassword.getPassword());
+        return doctorRepository.save(doctor);
     }
 
     public void validateDoctorFields(Doctor doctor) {
@@ -72,3 +82,5 @@ public class DoctorService {
         }
     }
 }
+
+

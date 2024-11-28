@@ -3,6 +3,7 @@ package com.ryszardpanda.medicalClinic.service;
 import com.ryszardpanda.medicalClinic.exceptions.EmailAlreadyInUse;
 import com.ryszardpanda.medicalClinic.exceptions.PersonNotFoundException;
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
+import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;
@@ -52,10 +53,12 @@ public class PatientService {
     }
 
     // Zaktualizuj hasło pacjenta
-    public Patient updatePassword(String email, String newPassword) {
+    public Patient updatePassword(String email, ChangePasswordDTO newPassword) {
         Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim ID",
                 HttpStatus.NOT_FOUND));
-        patient.setPassword(newPassword);
+        System.out.println("aktualizacji hasła dla emaila: " + email +
+                ", dane: " + newPassword.getPassword());
+        patient.setPassword(newPassword.getPassword());
         return patientRepository.save(patient);
     }
 
@@ -68,7 +71,6 @@ public class PatientService {
     public Patient getPatientByEmail(String email) {
         return patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim emailu.",
                 HttpStatus.NOT_FOUND));
-
     }
 
     public void validatePatientFields(Patient patient) {

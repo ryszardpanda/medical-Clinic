@@ -1,6 +1,7 @@
 package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
+import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.service.PatientService;
@@ -27,8 +28,8 @@ public class PatientController {
     }
 
     @PostMapping("/patients")
-    private PatientEditDTO addPatient(@Valid @RequestBody PatientEditDTO patientEditDTO) {
-        return patientMapper.patientToPatientEditDTO(patientService.addPatient(patientEditDTO));
+    private PatientDTO addPatient(@Valid @RequestBody PatientEditDTO patientEditDTO) {
+        return patientMapper.patientToDTO(patientService.addPatient(patientEditDTO));
     }
 
     @GetMapping("/patients/{email}")
@@ -45,12 +46,12 @@ public class PatientController {
 
     // Metoda PUT, która edytuje pacjenta na podstawie adresu e-mail
     @PutMapping("/patients/{email}")
-    public PatientEditDTO updatePatient(@PathVariable String email, @Valid @RequestBody PatientEditDTO updatedPatientEditDTO) {
-        return patientMapper.patientToPatientEditDTO(patientService.updatePatient(email, updatedPatientEditDTO));
+    public PatientDTO updatePatient(@PathVariable String email, @Valid @RequestBody PatientEditDTO updatedPatientEditDTO) {
+        return patientMapper.patientToDTO(patientService.updatePatient(email, updatedPatientEditDTO));
     }
 
     @PatchMapping("/patients/{email}")
-    public PatientDTO updatePassword(@PathVariable String email, @RequestBody String updatedPassword) {
-        return patientMapper.patientToDTO(patientService.updatePassword(email, updatedPassword));
+    public void updatePassword(@PathVariable String email, @RequestBody ChangePasswordDTO updatedPassword) {
+        patientMapper.patientToChangePasswordDTO(patientService.updatePassword(email, updatedPassword));
     }
 }

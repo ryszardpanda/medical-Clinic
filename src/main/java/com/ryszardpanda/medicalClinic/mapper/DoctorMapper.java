@@ -1,8 +1,6 @@
 package com.ryszardpanda.medicalClinic.mapper;
 
-import com.ryszardpanda.medicalClinic.model.Doctor;
-import com.ryszardpanda.medicalClinic.model.DoctorDTO;
-import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
+import com.ryszardpanda.medicalClinic.model.*;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -11,4 +9,5 @@ public interface DoctorMapper {
     DoctorEditDTO doctorToDoctorEditDTO (Doctor doctor);
     Doctor doctorDtoToDoctor(DoctorDTO doctorDTO);
     DoctorDTO doctorToDoctorDTO (Doctor doctor);
+    ChangePasswordDTO doctorToChangePasswordDTO(Doctor doctor);
 }

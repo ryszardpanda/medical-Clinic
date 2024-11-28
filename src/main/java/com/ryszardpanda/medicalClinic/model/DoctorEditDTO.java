@@ -15,7 +15,6 @@ public class DoctorEditDTO {
     @Email(message = "Zły format email")
     @NotBlank(message = "Email nie może być puste, bądź być nullem")
     private String email;
-    @NotBlank(message = "Password nie może być puste, bądź być nullem")
     private String password;
     @NotBlank(message = "Specjalizacja nie może być pusta, bądź być nullem")
     private String specialization;
