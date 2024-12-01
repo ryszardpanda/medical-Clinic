@@ -24,4 +24,8 @@ public class Doctor {
     private String password;
     @Column(name = "SPECIALIZATION", length = 50, nullable = false)
     private String specialization;
+
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    private Institution institution;
 }

@@ -1,10 +1,9 @@
 package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
-import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
-import com.ryszardpanda.medicalClinic.model.DoctorDTO;
-import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
+import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
+import com.ryszardpanda.medicalClinic.service.InstitutionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
     private final DoctorService doctorService;
+    private final InstitutionService institutionService;
     private final DoctorMapper doctorMapper;
 
     @GetMapping("/doctors")
@@ -49,5 +49,12 @@ public class DoctorController {
     @PatchMapping("/doctors/{email}")
     public void updatePassword(@PathVariable String email, @RequestBody ChangePasswordDTO updatedPassword) {
         doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
+    }
+
+    @PatchMapping("/doctors/{doctorId}/assign/{institutionId}")
+    public DoctorDTO assignDoctorToInstitution(@PathVariable Long doctorId, @PathVariable Long institutionId) {
+        Doctor doctor = doctorService.findDoctorById(doctorId);
+        Institution institution = institutionService.findInstitutionById(institutionId);
+        return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctor, institution));
     }
 }

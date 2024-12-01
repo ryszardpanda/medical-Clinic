@@ -1,11 +1,13 @@
 package com.ryszardpanda.medicalClinic.service;
 
 import com.ryszardpanda.medicalClinic.exceptions.EmailAlreadyInUse;
+import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.PersonNotFoundException;
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
+import com.ryszardpanda.medicalClinic.model.Institution;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,6 +64,16 @@ public class DoctorService {
                 HttpStatus.NOT_FOUND));
         doctor.setPassword(updatedPassword.getPassword());
         return doctorRepository.save(doctor);
+    }
+
+    public Doctor assignDoctorToInstitution(Doctor doctor, Institution institution){
+        doctor.setInstitution(institution);
+        return doctorRepository.save(doctor);
+    }
+
+    public Doctor findDoctorById(Long id){
+        return doctorRepository.findById(id).orElseThrow(() -> new NoIdNumberException("Nie znaleziono Doktora o takim ID",
+                HttpStatus.NOT_FOUND));
     }
 
     public void validateDoctorFields(Doctor doctor) {
