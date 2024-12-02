@@ -1,9 +1,11 @@
 package com.ryszardpanda.medicalClinic.service;
 
 import com.ryszardpanda.medicalClinic.exceptions.EmailAlreadyInUse;
+import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.PersonNotFoundException;
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
+import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;
@@ -70,6 +72,11 @@ public class PatientService {
 
     public Patient getPatientByEmail(String email) {
         return patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim emailu.",
+                HttpStatus.NOT_FOUND));
+    }
+
+    public Patient findPatientById(Long id){
+        return patientRepository.findById(id).orElseThrow(() -> new NoIdNumberException("Nie znaleziono Pacjenta o takim ID",
                 HttpStatus.NOT_FOUND));
     }
 

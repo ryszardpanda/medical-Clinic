@@ -21,6 +21,7 @@ import java.util.Optional;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
+    private final InstitutionService institutionService;
 
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
@@ -66,7 +67,9 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public Doctor assignDoctorToInstitution(Doctor doctor, Institution institution){
+    public Doctor assignDoctorToInstitution(Long doctorId, Long institutionId){
+        Doctor doctor = findDoctorById(doctorId);
+        Institution institution = institutionService.findInstitutionById(institutionId);
         doctor.setInstitution(institution);
         return doctorRepository.save(doctor);
     }

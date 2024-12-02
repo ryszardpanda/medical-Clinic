@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
     private final DoctorService doctorService;
-    private final InstitutionService institutionService;
     private final DoctorMapper doctorMapper;
 
     @GetMapping("/doctors")
@@ -51,10 +50,8 @@ public class DoctorController {
         doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
     }
 
-    @PatchMapping("/doctors/{doctorId}/assign/{institutionId}")
+    @PatchMapping("/doctors/{doctorId}/assignToInstitution/{institutionId}")
     public DoctorDTO assignDoctorToInstitution(@PathVariable Long doctorId, @PathVariable Long institutionId) {
-        Doctor doctor = doctorService.findDoctorById(doctorId);
-        Institution institution = institutionService.findInstitutionById(institutionId);
-        return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctor, institution));
+        return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctorId, institutionId));
     }
 }
