@@ -1,9 +1,7 @@
 package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
-import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
-import com.ryszardpanda.medicalClinic.model.DoctorDTO;
-import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
+import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +47,10 @@ public class DoctorController {
     @PatchMapping("/doctors/{email}")
     public void updatePassword(@PathVariable String email, @RequestBody ChangePasswordDTO updatedPassword) {
         doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
+    }
+
+    @PatchMapping("/doctors/{doctorId}/assign-to-institution/{institutionId}")
+    public DoctorDTO assignDoctorToInstitution(@PathVariable Long doctorId, @PathVariable Long institutionId) {
+        return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctorId, institutionId));
     }
 }

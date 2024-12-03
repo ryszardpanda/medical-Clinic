@@ -43,6 +43,13 @@ public class MedicalClinicExceptionHandler {
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
+    @ExceptionHandler({VisitUnavailable.class})
+    public ResponseEntity<ErrorMessage> handleVisitUnavailable(
+            VisitUnavailable ex) {
+        return new ResponseEntity<ErrorMessage>(
+                new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors()
