@@ -3,7 +3,6 @@ package com.ryszardpanda.medicalClinic.controller;
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
 import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
-import com.ryszardpanda.medicalClinic.service.InstitutionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,7 +49,7 @@ public class DoctorController {
         doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
     }
 
-    @PatchMapping("/doctors/{doctorId}/assignToInstitution/{institutionId}")
+    @PatchMapping("/doctors/{doctorId}/assign-to-institution/{institutionId}")
     public DoctorDTO assignDoctorToInstitution(@PathVariable Long doctorId, @PathVariable Long institutionId) {
         return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctorId, institutionId));
     }

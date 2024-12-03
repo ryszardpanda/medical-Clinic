@@ -26,10 +26,10 @@ public class Visit {
     @ManyToOne
     private Doctor doctor;
 
-    public static Visit create(Doctor doctor, LocalDateTime localDateTime){
+    public static Visit create(Doctor doctor, LocalDateTime date){
         Visit visit = new Visit();
         visit.setDoctor(doctor);
-        visit.setDate(localDateTime);
+        visit.setDate(date);
         return visit;
     }
 }

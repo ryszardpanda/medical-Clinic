@@ -5,7 +5,6 @@ import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.PersonNotFoundException;
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
-import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;

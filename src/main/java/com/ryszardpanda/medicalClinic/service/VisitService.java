@@ -5,6 +5,7 @@ import com.ryszardpanda.medicalClinic.exceptions.VisitUnavailable;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.Visit;
+import com.ryszardpanda.medicalClinic.model.VisitEditDTO;
 import com.ryszardpanda.medicalClinic.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,9 @@ public class VisitService {
     private final PatientService patientService;
     private final DoctorService doctorService;
 
-    public Visit createVisit(Long doctorId, LocalDateTime dateTime) {
-        Doctor doctorById = doctorService.findDoctorById(doctorId);
-        return visitRepository.save(Visit.create(doctorById, dateTime));
+    public Visit createVisit(VisitEditDTO visitEditDTO) {
+        Doctor doctorById = doctorService.findDoctorById(visitEditDTO.getId());
+        return visitRepository.save(Visit.create(doctorById, visitEditDTO.getDate()));
     }
 
     public Visit bookVisit(Long visitId, Long patientId) {
