@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -19,6 +20,11 @@ public class Institution {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "institution")
-    private Set<Doctor> doctors;
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_institution",
+            joinColumns = @JoinColumn(name = "institution_id"),
+            inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
+    private Set<Doctor> doctors = new HashSet<>();
 }

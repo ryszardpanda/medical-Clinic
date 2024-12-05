@@ -26,6 +26,9 @@ public class Visit {
     @ManyToOne
     private Doctor doctor;
 
+    @ManyToOne
+    private Institution institution;
+
     public static Visit create(Doctor doctor, LocalDateTime date){
         Visit visit = new Visit();
         visit.setDoctor(doctor);
