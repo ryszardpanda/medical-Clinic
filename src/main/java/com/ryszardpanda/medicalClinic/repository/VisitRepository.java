@@ -12,6 +12,8 @@ import java.util.List;
 public interface VisitRepository extends JpaRepository<Visit, Long> {
     List<Visit> findByPatientId(Long patientId);
 
+    List<Visit> findByInstitutionId(Long institutionId);
+
     List<Visit> findByDate(LocalDateTime localDateTime);
 
     @Query(value = "SELECT * FROM visit v WHERE v.date_of_visit > CURRENT_TIMESTAMP AND v.patient_id IS NULL", nativeQuery = true)
