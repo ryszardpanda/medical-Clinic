@@ -19,11 +19,6 @@ public class VisitService {
     private final DoctorService doctorService;
     private final InstitutionService institutionService;
 
-//    public Visit createVisit(VisitEditDTO visitEditDTO) {
-//        Doctor doctorById = doctorService.findDoctorById(visitEditDTO.getId());
-//        return visitRepository.save(Visit.create(doctorById, visitEditDTO.getDate()));
-//    }
-
     public Visit createVisit(VisitEditDTO visitEditDTO) {
         Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
         Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());

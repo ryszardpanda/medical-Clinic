@@ -7,7 +7,6 @@ import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
-import com.ryszardpanda.medicalClinic.model.Institution;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -89,5 +88,3 @@ public class DoctorService {
         }
     }
 }
-
-

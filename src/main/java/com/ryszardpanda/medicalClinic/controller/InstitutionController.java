@@ -22,5 +22,4 @@ public class InstitutionController {
     public InstitutionDTO assignDoctorToInstitution(@PathVariable Long institutionId, @PathVariable Long doctorId) {
         return institutionMapper.institutionToInstitutionDTO(institutionService.assignDoctorToInstitution(doctorId, institutionId));
     }
-
 }
