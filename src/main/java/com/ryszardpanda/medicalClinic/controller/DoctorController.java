@@ -48,9 +48,4 @@ public class DoctorController {
     public void updatePassword(@PathVariable String email, @RequestBody ChangePasswordDTO updatedPassword) {
         doctorMapper.doctorToChangePasswordDTO(doctorService.updatePassword(email, updatedPassword));
     }
-
-    @PatchMapping("/doctors/{doctorId}/assign-to-institution/{institutionId}")
-    public DoctorDTO assignDoctorToInstitution(@PathVariable Long doctorId, @PathVariable Long institutionId) {
-        return doctorMapper.doctorToDoctorDTO(doctorService.assignDoctorToInstitution(doctorId, institutionId));
-    }
 }

@@ -7,7 +7,6 @@ import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
-import com.ryszardpanda.medicalClinic.model.Institution;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import java.util.Optional;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
-    private final InstitutionService institutionService;
 
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
@@ -31,7 +29,7 @@ public class DoctorService {
         Doctor doctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
         validateDoctorFields(doctor);
         Optional<Doctor> existingDoctor = doctorRepository.findByEmail(doctorEditDTO.getEmail());
-        if (existingDoctor.isPresent()){
+        if (existingDoctor.isPresent()) {
             throw new EmailAlreadyInUse("Doktor o takim emailu już istnieje", HttpStatus.CONFLICT);
         }
         return doctorRepository.save(doctor);
@@ -67,14 +65,7 @@ public class DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    public Doctor assignDoctorToInstitution(Long doctorId, Long institutionId){
-        Doctor doctor = findDoctorById(doctorId);
-        Institution institution = institutionService.findInstitutionById(institutionId);
-        doctor.setInstitution(institution);
-        return doctorRepository.save(doctor);
-    }
-
-    public Doctor findDoctorById(Long id){
+    public Doctor findDoctorById(Long id) {
         return doctorRepository.findById(id).orElseThrow(() -> new NoIdNumberException("Nie znaleziono Doktora o takim ID",
                 HttpStatus.NOT_FOUND));
     }
@@ -97,5 +88,3 @@ public class DoctorService {
         }
     }
 }
-
-

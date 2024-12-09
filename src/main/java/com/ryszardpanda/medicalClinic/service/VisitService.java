@@ -2,10 +2,7 @@ package com.ryszardpanda.medicalClinic.service;
 
 import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.VisitUnavailable;
-import com.ryszardpanda.medicalClinic.model.Doctor;
-import com.ryszardpanda.medicalClinic.model.Patient;
-import com.ryszardpanda.medicalClinic.model.Visit;
-import com.ryszardpanda.medicalClinic.model.VisitEditDTO;
+import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,10 +17,11 @@ public class VisitService {
     private final VisitRepository visitRepository;
     private final PatientService patientService;
     private final DoctorService doctorService;
+    private final InstitutionService institutionService;
 
     public Visit createVisit(VisitEditDTO visitEditDTO) {
-        Doctor doctorById = doctorService.findDoctorById(visitEditDTO.getId());
-        return visitRepository.save(Visit.create(doctorById, visitEditDTO.getDate()));
+        Visit visit = checkVisit(visitEditDTO);
+        return visitRepository.save(visit);
     }
 
     public Visit bookVisit(Long visitId, Long patientId) {
@@ -47,5 +45,17 @@ public class VisitService {
 
     public List<Visit> getAvailableVisit() {
         return visitRepository.findAvailableVisits();
+    }
+
+    public Visit checkVisit(VisitEditDTO visitEditDTO){
+        Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
+        Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
+
+        Visit visit = new Visit();
+        visit.setDoctor(doctor);
+        visit.setInstitution(institution);
+        visit.setDate(visitEditDTO.getDate());
+
+        return visit;
     }
 }
