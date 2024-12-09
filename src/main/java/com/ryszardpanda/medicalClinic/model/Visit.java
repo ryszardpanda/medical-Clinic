@@ -28,11 +28,4 @@ public class Visit {
 
     @ManyToOne
     private Institution institution;
-
-    public static Visit create(Doctor doctor, LocalDateTime date){
-        Visit visit = new Visit();
-        visit.setDoctor(doctor);
-        visit.setDate(date);
-        return visit;
-    }
 }

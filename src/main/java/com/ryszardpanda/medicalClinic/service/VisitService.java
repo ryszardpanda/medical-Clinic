@@ -20,14 +20,7 @@ public class VisitService {
     private final InstitutionService institutionService;
 
     public Visit createVisit(VisitEditDTO visitEditDTO) {
-        Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
-        Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
-
-        Visit visit = new Visit();
-        visit.setDoctor(doctor);
-        visit.setInstitution(institution);
-        visit.setDate(visitEditDTO.getDate());
-
+        Visit visit = checkVisit(visitEditDTO);
         return visitRepository.save(visit);
     }
 
@@ -52,5 +45,17 @@ public class VisitService {
 
     public List<Visit> getAvailableVisit() {
         return visitRepository.findAvailableVisits();
+    }
+
+    public Visit checkVisit(VisitEditDTO visitEditDTO){
+        Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
+        Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
+
+        Visit visit = new Visit();
+        visit.setDoctor(doctor);
+        visit.setInstitution(institution);
+        visit.setDate(visitEditDTO.getDate());
+
+        return visit;
     }
 }

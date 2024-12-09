@@ -16,8 +16,8 @@ public class VisitEditDTO {
     @NotNull(message = "Data nie może być pusta, bądź być nullem")
     @Future(message = "Date and time must be in the future")
     private LocalDateTime date;
-    @NotNull
+    @NotNull(message = "Id lekarza, nie może być nullem")
     private Long doctorId;
-    @NotNull
+    @NotNull(message = "Id instytucji, nie może być nullem")
     private Long institutionId;
 }

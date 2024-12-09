@@ -29,6 +29,20 @@ public class MedicalClinicExceptionHandler {
                 new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
+    @ExceptionHandler({InstitutionNotFoundException.class})
+    public ResponseEntity<ErrorMessage> handleInstitutionNotFoundException(
+            InstitutionNotFoundException ex) {
+        return new ResponseEntity<ErrorMessage>(
+                new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+    }
+
+    @ExceptionHandler({DoctorNotFoundException.class})
+    public ResponseEntity<ErrorMessage> handleDoctorNotFoundException(
+            DoctorNotFoundException ex) {
+        return new ResponseEntity<ErrorMessage>(
+                new ErrorMessage(ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+    }
+
     @ExceptionHandler({PersonIdAlreadyExist.class})
     public ResponseEntity<ErrorMessage> handlePatientIdAlreadyExist(
             PersonIdAlreadyExist ex) {
@@ -64,9 +78,9 @@ public class MedicalClinicExceptionHandler {
     }
 
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<Object> handleDefaultException(
+    public ResponseEntity<ErrorMessage> handleDefaultException(
             RuntimeException ex) {
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<ErrorMessage>(
                 new ErrorMessage("Unknown Error"), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

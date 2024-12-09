@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/institution")
 public class InstitutionController {
     private final InstitutionService institutionService;
     private final InstitutionMapper institutionMapper;
 
-    @PostMapping("/institution")
+    @PostMapping()
     public InstitutionDTO addInstitution(@Valid @RequestBody InstitutionDTO institutionDTO){
         return institutionMapper.institutionToInstitutionDTO(institutionService.addInstitution(institutionDTO));
     }

@@ -1,5 +1,6 @@
 package com.ryszardpanda.medicalClinic.service;
 
+import com.ryszardpanda.medicalClinic.exceptions.InstitutionNotFoundException;
 import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.mapper.InstitutionMapper;
 import com.ryszardpanda.medicalClinic.model.Doctor;
@@ -33,12 +34,11 @@ public class InstitutionService {
 
     public Institution assignDoctorToInstitution(Long doctorId, Long institutionId) {
         Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(() -> new NoIdNumberException("Nie znaleziono placówki o danym ID", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new InstitutionNotFoundException("Nie znaleziono placówki o danym ID", HttpStatus.NOT_FOUND));
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new NoIdNumberException("Nie znaleziono lekarza o danym ID", HttpStatus.NOT_FOUND));
 
         institution.getDoctors().add(doctor);
         return institutionRepository.save(institution);
-
     }
 }
