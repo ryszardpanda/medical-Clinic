@@ -8,6 +8,7 @@ import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class PatientService {
     }
 
     // Dodaj nowego pacjenta
+    @Transactional
     public Patient addPatient(PatientEditDTO patientEditDTO) {
         Patient patient = patientMapper.patientEditDtoToPatient(patientEditDTO);
         validatePatientFields(patient);
@@ -39,6 +41,7 @@ public class PatientService {
     }
 
     // Zaktualizuj dane pacjenta
+    @Transactional
     public Patient updatePatient(String email, PatientEditDTO updatedPatientEditDTO) {
         Patient updatedPatient = patientMapper.patientEditDtoToPatient(updatedPatientEditDTO);
         Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID",
@@ -50,19 +53,21 @@ public class PatientService {
         patient.setPhoneNumber(updatedPatient.getPhoneNumber());
         patient.setBirthday(updatedPatient.getBirthday());
         // Zapisujemy zmiany
-        return patientRepository.save(patient);
+        return patient;
     }
 
     // Zaktualizuj hasło pacjenta
+    @Transactional
     public Patient updatePassword(String email, ChangePasswordDTO newPassword) {
         Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim ID",
                 HttpStatus.NOT_FOUND));
         System.out.println("aktualizacji hasła dla emaila: " + email +
                 ", dane: " + newPassword.getPassword());
         patient.setPassword(newPassword.getPassword());
-        return patientRepository.save(patient);
+        return patient;
     }
 
+    @Transactional
     public void deletePatientByEmail(String email) {
         Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim ID",
                 HttpStatus.NOT_FOUND));
