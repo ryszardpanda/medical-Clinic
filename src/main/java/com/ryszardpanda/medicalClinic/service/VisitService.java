@@ -4,6 +4,7 @@ import com.ryszardpanda.medicalClinic.exceptions.NoIdNumberException;
 import com.ryszardpanda.medicalClinic.exceptions.VisitUnavailable;
 import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.repository.VisitRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ public class VisitService {
     private final DoctorService doctorService;
     private final InstitutionService institutionService;
 
+    @Transactional
     public Visit createVisit(VisitEditDTO visitEditDTO) {
         Visit visit = checkVisit(visitEditDTO);
         return visitRepository.save(visit);
     }
 
+    @Transactional
     public Visit bookVisit(Long visitId, Long patientId) {
         Visit visit = visitRepository.findById(visitId).orElseThrow(() -> new NoIdNumberException("Wizyta o takim ID nie istnieje",
                 HttpStatus.NOT_FOUND));
@@ -36,7 +39,7 @@ public class VisitService {
         }
         Patient patientById = patientService.findPatientById(patientId);
         visit.setPatient(patientById);
-        return visitRepository.save(visit);
+        return visit;
     }
 
     public List<Visit> getPatientsVisits(Long patientId) {

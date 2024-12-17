@@ -8,6 +8,7 @@ import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class DoctorService {
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
     }
-
+    @Transactional
     public Doctor addDoctor(DoctorEditDTO doctorEditDTO) {
         Doctor doctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
         validateDoctorFields(doctor);
@@ -39,13 +40,14 @@ public class DoctorService {
         return doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
                 HttpStatus.NOT_FOUND));
     }
-
+    @Transactional
     public void deleteDoctorByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
                 HttpStatus.NOT_FOUND));
         doctorRepository.delete(doctor);
     }
 
+    @Transactional
     public Doctor updateDoctor(String email, DoctorEditDTO doctorEditDTO) {
         Doctor updatedDoctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
         Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
@@ -55,14 +57,14 @@ public class DoctorService {
         doctor.setEmail(updatedDoctor.getEmail());
         doctor.setSpecialization(updatedDoctor.getSpecialization());
 
-        return doctorRepository.save(doctor);
+        return doctor;
     }
-
+    @Transactional
     public Doctor updatePassword(String email, ChangePasswordDTO updatedPassword) {
         Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
                 HttpStatus.NOT_FOUND));
         doctor.setPassword(updatedPassword.getPassword());
-        return doctorRepository.save(doctor);
+        return doctor;
     }
 
     public Doctor findDoctorById(Long id) {

@@ -8,7 +8,17 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface VisitMapper {
     Visit visitDTOToVisit(VisitDTO visitDTO);
-    VisitDTO visitToVisitDTO(Visit visit);
+
     Visit visitEditDTOToVisit(VisitEditDTO visitEditDTO);
+
     VisitEditDTO visitToVisitEditDTO(Visit visit);
+
+    default VisitDTO visitToVisitDTO(Visit visit) {
+        VisitDTO visitDTO = new VisitDTO();
+        visitDTO.setId(visit.getId());
+        visitDTO.setDate(visit.getDate());
+        visitDTO.setDoctorId(visit.getDoctor().getId());
+        visitDTO.setInstitutionId(visit.getInstitution().getId());
+        return visitDTO;
+    }
 }
