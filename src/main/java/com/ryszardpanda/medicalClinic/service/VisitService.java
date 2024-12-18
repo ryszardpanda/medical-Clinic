@@ -31,7 +31,7 @@ public class VisitService {
         Visit visit = visitRepository.findById(visitId).orElseThrow(() -> new NoIdNumberException("Wizyta o takim ID nie istnieje",
                 HttpStatus.NOT_FOUND));
 
-        if (visit.getDate().isBefore(LocalDateTime.now())) {
+        if (visit.getStartDate().isBefore(LocalDateTime.now())) {
             throw new VisitUnavailable("Nie można zarezerwować przeszłej wizyty", HttpStatus.CONFLICT);
         }
         if (visit.getPatient() != null) {
@@ -50,14 +50,26 @@ public class VisitService {
         return visitRepository.findAvailableVisits();
     }
 
-    public Visit checkVisit(VisitEditDTO visitEditDTO){
+    public Visit checkVisit(VisitEditDTO visitEditDTO) {
+
         Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
         Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
+
+        List<Visit> overlappingVisits = visitRepository.findOverlappingVisits(
+                doctor.getId(),
+                visitEditDTO.getStartDate(),
+                visitEditDTO.getEndDate()
+        );
+
+        if (!overlappingVisits.isEmpty()) {
+            throw new VisitUnavailable("Wizyta nakłada się na inną wizytę. Wybierz inny termin", HttpStatus.CONFLICT);
+        }
 
         Visit visit = new Visit();
         visit.setDoctor(doctor);
         visit.setInstitution(institution);
-        visit.setDate(visitEditDTO.getDate());
+        visit.setStartDate(visitEditDTO.getStartDate());
+        visit.setEndDate(visitEditDTO.getEndDate());
 
         return visit;
     }

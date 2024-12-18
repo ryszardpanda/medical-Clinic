@@ -16,7 +16,8 @@ public interface VisitMapper {
     default VisitDTO visitToVisitDTO(Visit visit) {
         VisitDTO visitDTO = new VisitDTO();
         visitDTO.setId(visit.getId());
-        visitDTO.setDate(visit.getDate());
+        visitDTO.setStartDate(visit.getStartDate());
+        visitDTO.setEndDate(visit.getEndDate());
         visitDTO.setDoctorId(visit.getDoctor().getId());
         visitDTO.setInstitutionId(visit.getInstitution().getId());
         return visitDTO;
