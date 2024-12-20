@@ -17,8 +17,10 @@ public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "dateOfVisit", length = 50, nullable = false)
-    private LocalDateTime date;
+    @Column(name = "startDate", length = 50, nullable = false)
+    private LocalDateTime startDate;
+    @Column(name = "endDate", length = 50, nullable = false)
+    private LocalDateTime endDate;
 
     @ManyToOne
     private Patient patient;
@@ -28,4 +30,14 @@ public class Visit {
 
     @ManyToOne
     private Institution institution;
+
+    public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution){
+        Visit visit = new Visit();
+        visit.setDoctor(doctor);
+        visit.setInstitution(institution);
+        visit.setStartDate(visitEditDTO.getStartDate());
+        visit.setEndDate(visitEditDTO.getEndDate());
+
+        return visit;
+    }
 }

@@ -11,11 +11,12 @@ import java.time.LocalDateTime;
 @Data
 public class VisitEditDTO {
 
-    @NotNull(message = "Id nie może być nullem")
     private Long id;
     @NotNull(message = "Data nie może być pusta, bądź być nullem")
-    @Future(message = "Date and time must be in the future")
-    private LocalDateTime date;
+    @Future(message = "Data i czas muszą być w przyszłości")
+    private LocalDateTime startDate;
+    @Future(message = "Data i czas muszą być w przyszłości")
+    private LocalDateTime endDate;
     @NotNull(message = "Id lekarza, nie może być nullem")
     private Long doctorId;
     @NotNull(message = "Id instytucji, nie może być nullem")

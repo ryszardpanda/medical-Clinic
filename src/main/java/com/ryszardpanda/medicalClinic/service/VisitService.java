@@ -22,7 +22,10 @@ public class VisitService {
 
     @Transactional
     public Visit createVisit(VisitEditDTO visitEditDTO) {
-        Visit visit = checkVisit(visitEditDTO);
+        Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
+        Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
+        checkVisit(visitEditDTO, doctor);
+        Visit visit = Visit.of(visitEditDTO, doctor, institution);
         return visitRepository.save(visit);
     }
 
@@ -31,7 +34,7 @@ public class VisitService {
         Visit visit = visitRepository.findById(visitId).orElseThrow(() -> new NoIdNumberException("Wizyta o takim ID nie istnieje",
                 HttpStatus.NOT_FOUND));
 
-        if (visit.getDate().isBefore(LocalDateTime.now())) {
+        if (visit.getStartDate().isBefore(LocalDateTime.now())) {
             throw new VisitUnavailable("Nie można zarezerwować przeszłej wizyty", HttpStatus.CONFLICT);
         }
         if (visit.getPatient() != null) {
@@ -50,15 +53,27 @@ public class VisitService {
         return visitRepository.findAvailableVisits();
     }
 
-    public Visit checkVisit(VisitEditDTO visitEditDTO){
-        Doctor doctor = doctorService.findDoctorById(visitEditDTO.getDoctorId());
-        Institution institution = institutionService.findInstitutionById(visitEditDTO.getInstitutionId());
+    public void checkVisit(VisitEditDTO visitEditDTO, Doctor doctor) {
 
-        Visit visit = new Visit();
-        visit.setDoctor(doctor);
-        visit.setInstitution(institution);
-        visit.setDate(visitEditDTO.getDate());
+        validateTime(visitEditDTO.getStartDate());
+        validateTime(visitEditDTO.getEndDate());
 
-        return visit;
+        List<Visit> overlappingVisits = visitRepository.findOverlappingVisits(
+                doctor.getId(),
+                visitEditDTO.getStartDate(),
+                visitEditDTO.getEndDate()
+        );
+
+        if (!overlappingVisits.isEmpty()) {
+            throw new VisitUnavailable("Wizyta nakłada się na inną wizytę. Wybierz inny termin", HttpStatus.CONFLICT);
+        }
+    }
+
+    private void validateTime(LocalDateTime dateTime) {
+        int minutes = dateTime.getMinute();
+        if (minutes % 15 != 0) {
+            throw new VisitUnavailable("Godzina wizyty musi być ustawiona na pełne kwadranse (np. 13:00, 13:15, 13:30, 13:45).",
+                    HttpStatus.CONFLICT);
+        }
     }
 }
