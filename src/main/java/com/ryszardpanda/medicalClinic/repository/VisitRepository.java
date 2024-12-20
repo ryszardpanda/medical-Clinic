@@ -28,5 +28,4 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
     List<Visit> findOverlappingVisits(@Param("doctorId") Long doctorId,
                                       @Param("startDate") LocalDateTime startDate,
                                       @Param("endDate") LocalDateTime endDate);
-
 }

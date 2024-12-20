@@ -30,4 +30,14 @@ public class Visit {
 
     @ManyToOne
     private Institution institution;
+
+    public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution){
+        Visit visit = new Visit();
+        visit.setDoctor(doctor);
+        visit.setInstitution(institution);
+        visit.setStartDate(visitEditDTO.getStartDate());
+        visit.setEndDate(visitEditDTO.getEndDate());
+
+        return visit;
+    }
 }
