@@ -84,7 +84,7 @@ public class PatientService {
                 HttpStatus.NOT_FOUND));
     }
 
-    public void validatePatientFields(Patient patient) {
+    private void validatePatientFields(Patient patient) {
         if (patient.getFirstName() == null || patient.getFirstName().isEmpty()) {
             throw new IllegalArgumentException("Imie nie może być puste, lub być nullem");
         }

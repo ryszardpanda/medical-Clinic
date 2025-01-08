@@ -72,7 +72,7 @@ public class DoctorService {
                 HttpStatus.NOT_FOUND));
     }
 
-    public void validateDoctorFields(Doctor doctor) {
+    private void validateDoctorFields(Doctor doctor) {
         if (doctor.getFirstName() == null || doctor.getFirstName().isEmpty()) {
             throw new IllegalArgumentException("Imie nie może być puste, lub być nullem");
         }
