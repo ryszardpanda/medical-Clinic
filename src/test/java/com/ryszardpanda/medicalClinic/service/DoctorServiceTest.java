@@ -36,7 +36,7 @@ public class DoctorServiceTest {
     @Test
     public void addDoctor_DoctorDoesNotExist_DoctorReturned(){
         //given
-        DoctorEditDTO doctorEditDTO = new DoctorEditDTO("Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
+        DoctorEditDTO doctorEditDTO = new DoctorEditDTO(1L,"Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
         Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
 
         when(doctorRepository.findByEmail("marcinn@op.pl")).thenReturn(Optional.empty());
@@ -54,7 +54,7 @@ public class DoctorServiceTest {
     @Test
     public void getDoctorByEmail_DoctorDoesExist_doctorFound(){
         //given
-        DoctorEditDTO doctorEditDTO = new DoctorEditDTO("Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
+        DoctorEditDTO doctorEditDTO = new DoctorEditDTO(1L,"Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
         Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
 
         when(doctorRepository.findByEmail("marcinn@op.pl")).thenReturn(Optional.of(doctor));
@@ -82,7 +82,7 @@ public class DoctorServiceTest {
     @Test
     public void updateDoctor_DoctorDoesExist_DoctorUpdated(){
         //given
-        DoctorEditDTO updatedDoctor = new DoctorEditDTO("Marcineeek", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
+        DoctorEditDTO updatedDoctor = new DoctorEditDTO(1L,"Marcineeek", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
         Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
 
         when(doctorRepository.findByEmail("marcinn@op.pl")).thenReturn(Optional.of(doctor));
@@ -146,7 +146,7 @@ public class DoctorServiceTest {
     @Test
     public void updateDoctor_DoctorDoesntExist_PersonNotFoundException(){
         //given
-        DoctorEditDTO updatedDoctor = new DoctorEditDTO("Marcineeek", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
+        DoctorEditDTO updatedDoctor = new DoctorEditDTO(1L,"Marcineeek", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka");
         when(doctorRepository.findByEmail(any())).thenReturn(Optional.empty());
         //when
         PersonNotFoundException result = Assertions.assertThrows(PersonNotFoundException.class, () -> doctorService.updateDoctor("eloelo", updatedDoctor));
