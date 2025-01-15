@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class PatientDTO {
+    private long id;
     @NotBlank(message = "Imie nie może być puste, bądź być nullem")
     private String firstName;
     @NotBlank(message = "Nazwisko nie może być puste, bądź być nullem")

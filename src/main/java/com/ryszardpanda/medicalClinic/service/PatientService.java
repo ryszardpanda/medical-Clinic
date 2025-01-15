@@ -44,7 +44,7 @@ public class PatientService {
     @Transactional
     public Patient updatePatient(String email, PatientEditDTO updatedPatientEditDTO) {
         Patient updatedPatient = patientMapper.patientEditDtoToPatient(updatedPatientEditDTO);
-        Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono pacjenta o takim ID",
+        Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim emailu.",
                 HttpStatus.NOT_FOUND));
         // Aktualizujemy dane pacjenta
         patient.setFirstName(updatedPatient.getFirstName());
@@ -59,7 +59,7 @@ public class PatientService {
     // Zaktualizuj hasło pacjenta
     @Transactional
     public Patient updatePassword(String email, ChangePasswordDTO newPassword) {
-        Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim ID",
+        Patient patient = patientRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Pacjenta o takim emailu.",
                 HttpStatus.NOT_FOUND));
         System.out.println("aktualizacji hasła dla emaila: " + email +
                 ", dane: " + newPassword.getPassword());
@@ -84,7 +84,7 @@ public class PatientService {
                 HttpStatus.NOT_FOUND));
     }
 
-    public void validatePatientFields(Patient patient) {
+    private void validatePatientFields(Patient patient) {
         if (patient.getFirstName() == null || patient.getFirstName().isEmpty()) {
             throw new IllegalArgumentException("Imie nie może być puste, lub być nullem");
         }

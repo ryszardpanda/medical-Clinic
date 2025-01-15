@@ -50,7 +50,7 @@ public class DoctorService {
     @Transactional
     public Doctor updateDoctor(String email, DoctorEditDTO doctorEditDTO) {
         Doctor updatedDoctor = doctorMapper.doctorEditDTOToDoctor(doctorEditDTO);
-        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
                 HttpStatus.NOT_FOUND));
         doctor.setFirstName(updatedDoctor.getFirstName());
         doctor.setLastName(updatedDoctor.getLastName());
@@ -61,7 +61,7 @@ public class DoctorService {
     }
     @Transactional
     public Doctor updatePassword(String email, ChangePasswordDTO updatedPassword) {
-        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono użytkownika o takim ID",
+        Doctor doctor = doctorRepository.findByEmail(email).orElseThrow(() -> new PersonNotFoundException("Nie znaleziono Doktora o takim emailu.",
                 HttpStatus.NOT_FOUND));
         doctor.setPassword(updatedPassword.getPassword());
         return doctor;
@@ -72,7 +72,7 @@ public class DoctorService {
                 HttpStatus.NOT_FOUND));
     }
 
-    public void validateDoctorFields(Doctor doctor) {
+    private void validateDoctorFields(Doctor doctor) {
         if (doctor.getFirstName() == null || doctor.getFirstName().isEmpty()) {
             throw new IllegalArgumentException("Imie nie może być puste, lub być nullem");
         }

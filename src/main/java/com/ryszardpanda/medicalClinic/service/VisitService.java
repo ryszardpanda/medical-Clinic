@@ -53,7 +53,7 @@ public class VisitService {
         return visitRepository.findAvailableVisits();
     }
 
-    public void checkVisit(VisitEditDTO visitEditDTO, Doctor doctor) {
+     void checkVisit(VisitEditDTO visitEditDTO, Doctor doctor) {
 
         validateTime(visitEditDTO.getStartDate());
         validateTime(visitEditDTO.getEndDate());

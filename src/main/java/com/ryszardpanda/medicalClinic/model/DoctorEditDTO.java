@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class DoctorEditDTO {
+    private long id;
     @NotBlank(message = "Imie nie może być puste, bądź być nullem")
     private String firstName;
     @NotBlank(message = "Nazwisko nie może być puste, bądź być nullem")
