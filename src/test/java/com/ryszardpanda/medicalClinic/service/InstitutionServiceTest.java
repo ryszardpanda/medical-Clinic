@@ -40,7 +40,6 @@ public class InstitutionServiceTest {
         InstitutionDTO institutionDTO = new InstitutionDTO(null, "Inst1");
         Institution institution = new Institution(1L, "Inst1", new HashSet<>());
 
-        Institution mappedInstitution = institutionMapper.institutionDTOtoInstitution(institutionDTO);
         when(institutionRepository.save(any())).thenReturn(institution);
 
         Institution result = institutionService.addInstitution(institutionDTO);
@@ -56,9 +55,9 @@ public class InstitutionServiceTest {
         //given
         Institution institution = new Institution(1L, "Inst1", new HashSet<>());
 
-        //when
         when(institutionRepository.findById(institution.getId())).thenReturn(Optional.of(institution));
 
+        //when
         Institution result = institutionService.findInstitutionById(institution.getId());
 
         //then
@@ -72,12 +71,12 @@ public class InstitutionServiceTest {
         //given
         Institution institution = new Institution(1L, "Inst1", new HashSet<>());
 
-        //when
         when(institutionRepository.findById(institution.getId())).thenReturn(Optional.empty());
-        //then
+        //when
         NoIdNumberException result = Assertions.assertThrows(NoIdNumberException.class, () -> institutionService
                 .findInstitutionById(institution.getId()));
 
+        //then
         Assertions.assertEquals("Nie znaleziono placówki o takim ID", result.getMessage());
         Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getHttpStatus());
     }
@@ -106,10 +105,10 @@ public class InstitutionServiceTest {
         Doctor doctor = new Doctor(1L, "Bolek", "Lolek", "jsksks", "lkamdalsdm", "bolki", new HashSet<>());
         Institution institution = new Institution(1L, "Inst1", new HashSet<>());
 
-        //when
         when(institutionRepository.findById(institution.getId())).thenReturn(Optional.empty());
         when(doctorRepository.findById(doctor.getId())).thenReturn(Optional.of(doctor));
 
+        //when
         InstitutionNotFoundException result = Assertions.assertThrows(InstitutionNotFoundException.class, () -> institutionService
                 .assignDoctorToInstitution(institution.getId(), doctor.getId()));
         //then

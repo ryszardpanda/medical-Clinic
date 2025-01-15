@@ -116,6 +116,7 @@ public class DoctorServiceTest {
 
         //when
         Doctor result = doctorService.findDoctorById(1L);
+        //then
         Assertions.assertEquals("marcinn@op.pl", result.getEmail());
         Assertions.assertEquals("Marcin", result.getFirstName());
         Assertions.assertEquals("Macinowski", result.getLastName());

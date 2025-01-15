@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 public class DoctorControllerTest {
 
     @Autowired
@@ -34,7 +33,6 @@ public class DoctorControllerTest {
 
     @MockBean
     private DoctorService doctorService;
-
 
     @Test
     void getDoctors_DoctorsListExist_DoctorsReturned() throws Exception {
@@ -52,13 +50,11 @@ public class DoctorControllerTest {
                 .andExpect(jsonPath("$[0].lastName").value("Adamslki"))
                 .andExpect(jsonPath("$[0].email").value("elo@.pl"))
                 .andExpect(jsonPath("$[0].specialization").value("it"))
-
                 .andExpect(jsonPath("$[1].id").value(1L))
                 .andExpect(jsonPath("$[1].firstName").value("Adam"))
                 .andExpect(jsonPath("$[1].lastName").value("Adamslki"))
                 .andExpect(jsonPath("$[1].email").value("elo@.pl"))
                 .andExpect(jsonPath("$[1].specialization").value("it"))
-
                 .andExpect(jsonPath("$[2].id").value(1L))
                 .andExpect(jsonPath("$[2].firstName").value("Adam"))
                 .andExpect(jsonPath("$[2].lastName").value("Adamslki"))
@@ -101,6 +97,8 @@ public class DoctorControllerTest {
     void deleteDoctor_DoctorExist_DoctorDeleted() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/doctors/elo@op.pl"))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(doctorService, Mockito.times(1)).deleteDoctorByEmail("elo@op.pl");
     }
 
     @Test
@@ -126,7 +124,6 @@ public class DoctorControllerTest {
         Doctor doctor = new Doctor(1L, "Adam", "Adamslki", "elo@op.pl", "123", "it", new HashSet<>());
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("eloelo");
         Doctor updatedDoctor = new Doctor(1L, "Adam", "Adamslki", "elo@op.pl", "eloelo", "it", new HashSet<>());
-
 
         Mockito.when(doctorService.updatePassword(doctor.getPassword(), changePasswordDTO)).thenReturn(updatedDoctor);
 

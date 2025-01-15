@@ -39,7 +39,6 @@ public class VisitServiceTest {
     @Test
     public void createVisit_DoctorAndInstitutionExist_VisitCreated(){
         //given
-
         Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
         Institution institution = new Institution(1L, "Marcinkowska", new HashSet<Doctor>());
         VisitEditDTO visitEditDTO = new VisitEditDTO(1L, LocalDateTime.of(2025, 2, 12, 11, 30),
@@ -99,7 +98,6 @@ public class VisitServiceTest {
 
         Visit visit = new Visit(1L, LocalDateTime.of(2025, 2, 12, 11, 30),
                 LocalDateTime.of(2025, 2, 12, 11, 41), new Patient(), doctor, institution);
-
 
         when(doctorService.findDoctorById(1L)).thenReturn(doctor);
         when(institutionService.findInstitutionById(1L)).thenReturn(institution);
@@ -181,12 +179,12 @@ public class VisitServiceTest {
         Visit visit = new Visit(1L, LocalDateTime.of(2025, 2, 12, 11, 30),
                 LocalDateTime.of(2025, 2, 12, 11, 45), new Patient(), doctor, institution);
 
-        //when
         when(visitRepository.findById(visit.getId())).thenReturn(Optional.of(visit));
 
-        //then
+        //when
         VisitUnavailable result = Assertions.assertThrows(VisitUnavailable.class, () -> visitService.bookVisit(visit.getId(), patient.getId()));
 
+        //then
         Assertions.assertEquals("Ta data jest zajęta, nie można zarezerwować wizyty", result.getMessage());
         Assertions.assertEquals(HttpStatus.CONFLICT, result.getHttpStatus());
     }

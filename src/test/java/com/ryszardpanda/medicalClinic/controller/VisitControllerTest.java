@@ -33,7 +33,6 @@ public class VisitControllerTest {
     @MockBean
     private VisitService visitService;
 
-    //nie pasi mu
     @Test
     void createVisit_PayloadCorrect_VisitCreated() throws Exception {
         Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
@@ -70,13 +69,37 @@ public class VisitControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.patch("/visits/1/book")
                         .param("patientId", "1")
                         .contentType(MediaType.APPLICATION_JSON))
-                //.andExpect(jsonPath("$.visitId").value(1L))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.startDate").value("2025-11-11T11:15:00"))
                 .andExpect(jsonPath("$.endDate").value("2025-11-11T12:45:00"))
                 .andExpect(jsonPath("$.doctorId").value(1L))
                 .andExpect(jsonPath("$.institutionId").value(1L));
 
+    }
+
+    @Test
+    void getPatientVisits_PatientVisitsExist_PatientVisitsReturned() throws Exception {
+        Patient patient1 = new Patient(1L, "Adam", "Adamski", "asas@op.pl", "1223", "21323", "121312323", LocalDate.of(1999, 11, 11));
+        Doctor doctor = new Doctor(1L, "Marcin", "Macinowski", "marcinn@op.pl", "eloelo", "kombinatoryka", new HashSet<Institution>());
+        Institution institution = new Institution(1L, "Marcinkowska", new HashSet<Doctor>());
+
+        Visit visit1 = new Visit(1L, LocalDateTime.of(2025, 11, 11, 11, 15),
+                LocalDateTime.of(2025, 11, 11, 12, 45), patient1, doctor, institution);
+        Visit visit2 = new Visit(1L, LocalDateTime.of(2025, 11, 11, 11, 15),
+                LocalDateTime.of(2025, 11, 11, 12, 45), patient1, doctor, institution);
+        Visit visit3 = new Visit(1L, LocalDateTime.of(2025, 11, 11, 11, 15),
+                LocalDateTime.of(2025, 11, 11, 12, 45), patient1, doctor, institution);
+
+        List<Visit> patientVisitList = List.of(visit1, visit2, visit3);
+
+        Mockito.when(visitService.getPatientsVisits(patient1.getId())).thenReturn(patientVisitList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/visits/patient/1"))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].startDate").value("2025-11-11T11:15:00"))
+                .andExpect(jsonPath("$[0].endDate").value("2025-11-11T12:45:00"))
+                .andExpect(jsonPath("$[0].doctorId").value(1L))
+                .andExpect(jsonPath("$[0].institutionId").value(1L));
     }
 
     @Test

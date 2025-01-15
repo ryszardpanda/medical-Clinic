@@ -100,12 +100,6 @@ class PatientServiceTest {
         Assertions.assertEquals("123", result.getPassword());
     }
 
-    //lekka pomoc chata z
-    // doNothing().when(patientRepository).delete(patient);
-    //        //when
-    //        patientService.deletePatientByEmail(email);
-    //        //then
-    //        verify(patientRepository, times(1)).delete(patient)
     @Test
     public void deletePatientByEmail_PatientDoesExist_patientDeleted() {
         //given
@@ -204,7 +198,9 @@ class PatientServiceTest {
     @Test
     public void findPatientById_PatientDoesntExist_PersonNotFoundException(){
         when(patientRepository.findById(any())).thenReturn(Optional.empty());
+
         NoIdNumberException result = Assertions.assertThrows(NoIdNumberException.class, () -> patientService.findPatientById(2L));
+
         Assertions.assertEquals("Nie znaleziono Pacjenta o takim ID", result.getMessage());
         Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getHttpStatus());
     }
