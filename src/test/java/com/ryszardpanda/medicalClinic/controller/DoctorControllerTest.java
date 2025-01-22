@@ -6,6 +6,8 @@ import com.ryszardpanda.medicalClinic.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import org.junit.jupiter.api.Test;
@@ -41,25 +43,27 @@ public class DoctorControllerTest {
         Doctor doctor2 = new Doctor(1L, "Adam", "Adamslki", "elo@.pl", "123", "it", new HashSet<>());
 
         List<Doctor> doctorsList = List.of(doctor, doctor1, doctor2);
+        PageImpl<Doctor> doctorsPage = new PageImpl<>(doctorsList);
 
-        Mockito.when(doctorService.getDoctors()).thenReturn(doctorsList);
+        Mockito.when(doctorService.getDoctors(PageRequest.of(0, 2))).thenReturn(doctorsPage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/doctors"))
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].firstName").value("Adam"))
-                .andExpect(jsonPath("$[0].lastName").value("Adamslki"))
-                .andExpect(jsonPath("$[0].email").value("elo@.pl"))
-                .andExpect(jsonPath("$[0].specialization").value("it"))
-                .andExpect(jsonPath("$[1].id").value(1L))
-                .andExpect(jsonPath("$[1].firstName").value("Adam"))
-                .andExpect(jsonPath("$[1].lastName").value("Adamslki"))
-                .andExpect(jsonPath("$[1].email").value("elo@.pl"))
-                .andExpect(jsonPath("$[1].specialization").value("it"))
-                .andExpect(jsonPath("$[2].id").value(1L))
-                .andExpect(jsonPath("$[2].firstName").value("Adam"))
-                .andExpect(jsonPath("$[2].lastName").value("Adamslki"))
-                .andExpect(jsonPath("$[2].email").value("elo@.pl"))
-                .andExpect(jsonPath("$[2].specialization").value("it"));
+                .andExpect(jsonPath("$.content[0].id").value(1L))
+                .andExpect(jsonPath("$.content[0].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[0].lastName").value("Adamslki"))
+                .andExpect(jsonPath("$.content[0].email").value("elo@.pl"))
+                .andExpect(jsonPath("$.content[0].specialization").value("it"))
+                .andExpect(jsonPath("$.content[1].id").value(1L))
+                .andExpect(jsonPath("$.content[1].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[1].lastName").value("Adamslki"))
+                .andExpect(jsonPath("$.content[1].email").value("elo@.pl"))
+                .andExpect(jsonPath("$.content[1].specialization").value("it"))
+                .andExpect(jsonPath("$.content[2].id").value(1L))
+                .andExpect(jsonPath("$.content[2].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[2].lastName").value("Adamslki"))
+                .andExpect(jsonPath("$.content[2].email").value("elo@.pl"))
+                .andExpect(jsonPath("$.content[2].specialization").value("it"))
+                .andExpect(jsonPath("$.totalElements").value(3));
     }
 
     @Test

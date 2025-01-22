@@ -2,15 +2,16 @@ package com.ryszardpanda.medicalClinic.controller;
 
 import com.ryszardpanda.medicalClinic.mapper.PatientMapper;
 import com.ryszardpanda.medicalClinic.model.ChangePasswordDTO;
+import com.ryszardpanda.medicalClinic.model.Patient;
 import com.ryszardpanda.medicalClinic.model.PatientDTO;
 import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController // mowie ze to jest Bean Springowy oraz kontroler -> czyli tutaj bede przechwytywal zapytania
 @RequiredArgsConstructor
@@ -18,14 +19,18 @@ public class PatientController {
     private final PatientService patientService;
     private final PatientMapper patientMapper;
 
-    // to jest po prostu definicja endpointu na sciezce "/patients"
-    // GET /patients
+
+    //PAGINATION
     @GetMapping("/patients")
-    public List<PatientDTO> getPatients() {
-        return patientService.getPatients().stream()
-                .map(patientMapper::patientToDTO)
-                .toList();
+    public Page<PatientDTO> getPatients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Patient> patientsPage = patientService.getPatients(pageRequest);
+        return patientsPage.map(patientMapper::patientToDTO);
     }
+
 
     @PostMapping("/patients")
     private PatientDTO addPatient(@Valid @RequestBody PatientEditDTO patientEditDTO) {

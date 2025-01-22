@@ -10,10 +10,11 @@ import com.ryszardpanda.medicalClinic.model.DoctorEditDTO;
 import com.ryszardpanda.medicalClinic.repository.DoctorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +23,8 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
 
-    public List<Doctor> getDoctors() {
-        return doctorRepository.findAll();
+    public Page<Doctor> getDoctors(Pageable pageable) {
+        return doctorRepository.findAll(pageable);
     }
     @Transactional
     public Doctor addDoctor(DoctorEditDTO doctorEditDTO) {

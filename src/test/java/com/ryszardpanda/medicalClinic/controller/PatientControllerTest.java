@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -42,31 +44,33 @@ public class PatientControllerTest {
         Patient patient3 = new Patient(1L, "Adam", "Adamski", "asas@op.pl", "1223", "21323", "121312323", LocalDate.of(1999, 11, 11));
 
         List<Patient> pateintsList = List.of(patient1, patient2, patient3);
+        PageImpl<Patient> patientsPage = new PageImpl<>(pateintsList);
 
-        Mockito.when(patientService.getPatients()).thenReturn(pateintsList);
+        Mockito.when(patientService.getPatients(PageRequest.of(0, 2))).thenReturn(patientsPage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/patients"))
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].firstName").value("Adam"))
-                .andExpect(jsonPath("$[0].lastName").value("Adamski"))
-                .andExpect(jsonPath("$[0].email").value("asas@op.pl"))
-                .andExpect(jsonPath("$[0].idCardNo").value("21323"))
-                .andExpect(jsonPath("$[0].phoneNumber").value("121312323"))
-                .andExpect(jsonPath("$[0].birthday").value("1999-11-11"))
-                .andExpect(jsonPath("$[1].id").value(1L))
-                .andExpect(jsonPath("$[1].firstName").value("Adam"))
-                .andExpect(jsonPath("$[1].lastName").value("Adamski"))
-                .andExpect(jsonPath("$[1].email").value("asas@op.pl"))
-                .andExpect(jsonPath("$[1].idCardNo").value("21323"))
-                .andExpect(jsonPath("$[1].phoneNumber").value("121312323"))
-                .andExpect(jsonPath("$[1].birthday").value("1999-11-11"))
-                .andExpect(jsonPath("$[2].id").value(1L))
-                .andExpect(jsonPath("$[2].firstName").value("Adam"))
-                .andExpect(jsonPath("$[2].lastName").value("Adamski"))
-                .andExpect(jsonPath("$[2].email").value("asas@op.pl"))
-                .andExpect(jsonPath("$[2].idCardNo").value("21323"))
-                .andExpect(jsonPath("$[2].phoneNumber").value("121312323"))
-                .andExpect(jsonPath("$[2].birthday").value("1999-11-11"));
+                .andExpect(jsonPath("$.content[0].id").value(1L))
+                .andExpect(jsonPath("$.content[0].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[0].lastName").value("Adamski"))
+                .andExpect(jsonPath("$.content[0].email").value("asas@op.pl"))
+                .andExpect(jsonPath("$.content[0].idCardNo").value("21323"))
+                .andExpect(jsonPath("$.content[0].phoneNumber").value("121312323"))
+                .andExpect(jsonPath("$.content[0].birthday").value("1999-11-11"))
+                .andExpect(jsonPath("$.content[1].id").value(1L))
+                .andExpect(jsonPath("$.content[1].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[1].lastName").value("Adamski"))
+                .andExpect(jsonPath("$.content[1].email").value("asas@op.pl"))
+                .andExpect(jsonPath("$.content[1].idCardNo").value("21323"))
+                .andExpect(jsonPath("$.content[1].phoneNumber").value("121312323"))
+                .andExpect(jsonPath("$.content[1].birthday").value("1999-11-11"))
+                .andExpect(jsonPath("$.content[2].id").value(1L))
+                .andExpect(jsonPath("$.content[2].firstName").value("Adam"))
+                .andExpect(jsonPath("$.content[2].lastName").value("Adamski"))
+                .andExpect(jsonPath("$.content[2].email").value("asas@op.pl"))
+                .andExpect(jsonPath("$.content[2].idCardNo").value("21323"))
+                .andExpect(jsonPath("$.content[2].phoneNumber").value("121312323"))
+                .andExpect(jsonPath("$.content[2].birthday").value("1999-11-11"))
+                .andExpect(jsonPath("$.totalElements").value(3));
     }
 
     @Test
@@ -106,8 +110,6 @@ public class PatientControllerTest {
 
     @Test
     void deletePatientByEmail_PatientExist_PatientDeleted() throws Exception {
-        Patient patient1 = new Patient(1L, "Adam", "Adamski", "asas@op.pl", "1223", "21323", "121312323", LocalDate.of(1999, 11, 11));
-
         mockMvc.perform(MockMvcRequestBuilders.delete("/patients/asas@op.pl"))
                 .andExpect(status().isNoContent());
     }
