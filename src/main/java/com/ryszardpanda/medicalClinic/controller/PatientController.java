@@ -9,28 +9,21 @@ import com.ryszardpanda.medicalClinic.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController // mowie ze to jest Bean Springowy oraz kontroler -> czyli tutaj bede przechwytywal zapytania
+@RestController
 @RequiredArgsConstructor
 public class PatientController {
     private final PatientService patientService;
     private final PatientMapper patientMapper;
 
-
-    //PAGINATION
     @GetMapping("/patients")
-    public Page<PatientDTO> getPatients(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size
-    ) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Patient> patientsPage = patientService.getPatients(pageRequest);
+    public Page<PatientDTO> getPatients(Pageable pageable) {
+        Page<Patient> patientsPage = patientService.getPatients(pageable);
         return patientsPage.map(patientMapper::patientToDTO);
     }
-
 
     @PostMapping("/patients")
     private PatientDTO addPatient(@Valid @RequestBody PatientEditDTO patientEditDTO) {

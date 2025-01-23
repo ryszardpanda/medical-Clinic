@@ -6,7 +6,7 @@ import com.ryszardpanda.medicalClinic.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +16,9 @@ public class DoctorController {
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
 
-    //TUTEJ
     @GetMapping("/doctors")
-    public Page<DoctorDTO> getDoctors(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size
-    ) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Doctor> doctors = doctorService.getDoctors(pageRequest);
+    public Page<DoctorDTO> getDoctors(Pageable pageable) {
+        Page<Doctor> doctors = doctorService.getDoctors(pageable);
         return doctors.map(doctorMapper::doctorToDoctorDTO);
     }
 
