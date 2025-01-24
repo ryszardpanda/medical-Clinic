@@ -184,7 +184,7 @@ class PatientServiceTest {
     }
 
     @Test
-    public void updatePassqord_PatientDoesNotExist_PersonNotFoundException(){
+    public void updatePassword_PatientDoesNotExist_PersonNotFoundException(){
         //given
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("123");
         when(patientRepository.findByEmail(any())).thenReturn(Optional.empty());

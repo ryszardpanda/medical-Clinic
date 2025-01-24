@@ -5,10 +5,10 @@ import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,10 +17,9 @@ public class DoctorController {
     private final DoctorMapper doctorMapper;
 
     @GetMapping("/doctors")
-    public List<DoctorDTO> getDoctors() {
-        return doctorService.getDoctors().stream()
-                .map(doctorMapper::doctorToDoctorDTO)
-                .toList();
+    public Page<DoctorDTO> getDoctors(Pageable pageable) {
+        Page<Doctor> doctors = doctorService.getDoctors(pageable);
+        return doctors.map(doctorMapper::doctorToDoctorDTO);
     }
 
     @PostMapping("/doctors")

@@ -10,10 +10,11 @@ import com.ryszardpanda.medicalClinic.model.PatientEditDTO;
 import com.ryszardpanda.medicalClinic.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,9 +24,8 @@ public class PatientService {
     final private PatientRepository patientRepository;
     final private PatientMapper patientMapper;
 
-    // Pobierz wszystkich pacjentów
-    public List<Patient> getPatients() {
-        return patientRepository.findAll();
+    public Page<Patient> getPatients(Pageable pageable) {
+        return patientRepository.findAll(pageable);
     }
 
     // Dodaj nowego pacjenta
