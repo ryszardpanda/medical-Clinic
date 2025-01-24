@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -46,7 +45,7 @@ public class PatientControllerTest {
         List<Patient> pateintsList = List.of(patient1, patient2, patient3);
         PageImpl<Patient> patientsPage = new PageImpl<>(pateintsList);
 
-        Mockito.when(patientService.getPatients(PageRequest.of(0, 2))).thenReturn(patientsPage);
+        Mockito.when(patientService.getPatients(any())).thenReturn(patientsPage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/patients"))
                 .andExpect(jsonPath("$.content[0].id").value(1L))

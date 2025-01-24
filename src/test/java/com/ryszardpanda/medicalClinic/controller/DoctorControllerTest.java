@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import com.ryszardpanda.medicalClinic.model.Doctor;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,7 @@ public class DoctorControllerTest {
         List<Doctor> doctorsList = List.of(doctor, doctor1, doctor2);
         PageImpl<Doctor> doctorsPage = new PageImpl<>(doctorsList);
 
-        Mockito.when(doctorService.getDoctors(PageRequest.of(0, 2))).thenReturn(doctorsPage);
+        Mockito.when(doctorService.getDoctors(any())).thenReturn(doctorsPage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/doctors"))
                 .andExpect(jsonPath("$.content[0].id").value(1L))
