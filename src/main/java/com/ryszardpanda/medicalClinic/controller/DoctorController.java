@@ -1,5 +1,6 @@
 package com.ryszardpanda.medicalClinic.controller;
 
+import com.ryszardpanda.medicalClinic.exceptions.ErrorMessage;
 import com.ryszardpanda.medicalClinic.mapper.DoctorMapper;
 import com.ryszardpanda.medicalClinic.model.*;
 import com.ryszardpanda.medicalClinic.service.DoctorService;
@@ -22,13 +23,14 @@ public class DoctorController {
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
 
-    @Operation(summary = "Zwróc doktorów")
+    @Operation(summary = "Zwróc doktorów", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Doktorzy poprawnie zwróceni",
-            content = {@Content(mediaType = "application/json",
-            schema = @Schema(implementation = DoctorDTO.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DoctorDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
-            content = {@Content})
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))}),
     })
     @GetMapping("/doctors")
     public Page<DoctorDTO> getDoctors(@ParameterObject Pageable pageable) {
@@ -36,37 +38,41 @@ public class DoctorController {
         return doctors.map(doctorMapper::doctorToDoctorDTO);
     }
 
-    @Operation(summary = "Dodaj doktora")
+    @Operation(summary = "Dodaj doktora", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Doktor dodany",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = DoctorDTO.class)) }),
+                            schema = @Schema(implementation = DoctorDTO.class))}),
             @ApiResponse(responseCode = "409", description = "Konflikt - doktor o takim emailu już istnieje",
-                    content = {@Content}),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad request",
-                    content = {@Content})
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
     })
     @PostMapping("/doctors")
     public DoctorDTO addDoctor(@Valid @RequestBody DoctorEditDTO doctorEditDTO) {
         return doctorMapper.doctorToDoctorDTO(doctorService.addDoctor(doctorEditDTO));
     }
 
-    @Operation(summary = "Znajdż doktora po emailu")
+    @Operation(summary = "Znajdż doktora po emailu", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Doktor znaleziony",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = DoctorDTO.class)) }),
+                            schema = @Schema(implementation = DoctorDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Not found",
-                    content = {@Content}),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad request",
-                    content = {@Content})
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
     })
     @GetMapping("/doctors/{email}")
     public DoctorDTO getDoctorByEmail(@PathVariable String email) {
         return doctorMapper.doctorToDoctorDTO(doctorService.getDoctorByEmail(email));
     }
 
-    @Operation(summary = "Usuń doktora po emailu")
+    @Operation(summary = "Usuń doktora po emailu", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Doktor usunięty",
                     content = {@Content}),
@@ -81,11 +87,11 @@ public class DoctorController {
         doctorService.deleteDoctorByEmail(email);
     }
 
-    @Operation(summary = "Update doktora po emailu")
+    @Operation(summary = "Update doktora po emailu", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Doktor zupdatowany",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = DoctorDTO.class)) }),
+                            schema = @Schema(implementation = DoctorDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Not found",
                     content = {@Content}),
             @ApiResponse(responseCode = "400", description = "Bad request",
@@ -96,10 +102,10 @@ public class DoctorController {
         return doctorMapper.doctorToDoctorDTO(doctorService.updateDoctor(email, updatedDoctorEditDTO));
     }
 
-    @Operation(summary = "Update hasła doktora mo emailu")
+    @Operation(summary = "Update hasła doktora mo emailu", tags = "Doctor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Hasło doktra zupdatowane",
-                    content = {@Content }),
+                    content = {@Content}),
             @ApiResponse(responseCode = "404", description = "Not found",
                     content = {@Content}),
             @ApiResponse(responseCode = "400", description = "Bad request",
