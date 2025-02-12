@@ -1,16 +1,15 @@
 package com.ryszardpanda.medicalClinic.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "DOCTORS")
 public class Doctor {
@@ -28,6 +27,24 @@ public class Doctor {
     @Column(name = "SPECIALIZATION", length = 50, nullable = false)
     private String specialization;
 
-    @ManyToMany(mappedBy = "doctors")
+    @ManyToMany(mappedBy = "doctors", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Institution> institutions = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Doctor))
+            return false;
+
+        Doctor other = (Doctor) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

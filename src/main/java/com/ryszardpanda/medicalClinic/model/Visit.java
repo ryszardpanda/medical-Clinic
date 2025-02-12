@@ -1,15 +1,14 @@
 package com.ryszardpanda.medicalClinic.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Visit")
 public class Visit {
@@ -22,13 +21,10 @@ public class Visit {
     @Column(name = "endDate", length = 50, nullable = false)
     private LocalDateTime endDate;
 
-    @ManyToOne
     private Patient patient;
 
-    @ManyToOne
     private Doctor doctor;
 
-    @ManyToOne
     private Institution institution;
 
     public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution){
@@ -39,5 +35,23 @@ public class Visit {
         visit.setEndDate(visitEditDTO.getEndDate());
 
         return visit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Visit))
+            return false;
+
+        Visit other = (Visit) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

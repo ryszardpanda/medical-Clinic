@@ -17,7 +17,7 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     List<Visit> findByStartDate(LocalDateTime localDateTime);
 
-    @Query(value = "SELECT * FROM visit v WHERE v.startDate > CURRENT_TIMESTAMP AND v.patient_id IS NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM visit v WHERE v.start_Date > CURRENT_TIMESTAMP AND v.patient_id IS NULL", nativeQuery = true)
     List<Visit> findAvailableVisits();
 
     @Query("SELECT v " +

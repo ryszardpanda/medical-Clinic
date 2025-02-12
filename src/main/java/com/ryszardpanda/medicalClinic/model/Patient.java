@@ -1,15 +1,14 @@
 package com.ryszardpanda.medicalClinic.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "PATIENTS")
 public class Patient {
@@ -30,4 +29,22 @@ public class Patient {
     private String phoneNumber;
     @Column(name="PATIENT_BIRTHDAY", length=50, nullable=false)
     private LocalDate birthday;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Patient))
+            return false;
+
+        Patient other = (Patient) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

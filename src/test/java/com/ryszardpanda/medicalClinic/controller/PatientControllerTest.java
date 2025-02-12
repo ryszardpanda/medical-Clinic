@@ -42,8 +42,8 @@ public class PatientControllerTest {
         Patient patient2 = new Patient(1L, "Adam", "Adamski", "asas@op.pl", "1223", "21323", "121312323", LocalDate.of(1999, 11, 11));
         Patient patient3 = new Patient(1L, "Adam", "Adamski", "asas@op.pl", "1223", "21323", "121312323", LocalDate.of(1999, 11, 11));
 
-        List<Patient> pateintsList = List.of(patient1, patient2, patient3);
-        PageImpl<Patient> patientsPage = new PageImpl<>(pateintsList);
+        List<Patient> patientList = List.of(patient1, patient2, patient3);
+        PageImpl<Patient> patientsPage = new PageImpl<>(patientList);
 
         Mockito.when(patientService.getPatients(any())).thenReturn(patientsPage);
 
