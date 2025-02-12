@@ -21,13 +21,10 @@ public class Visit {
     @Column(name = "endDate", length = 50, nullable = false)
     private LocalDateTime endDate;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
     private Patient patient;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
     private Doctor doctor;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
     private Institution institution;
 
     public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution){
