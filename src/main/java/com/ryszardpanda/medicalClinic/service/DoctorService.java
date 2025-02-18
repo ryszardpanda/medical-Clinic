@@ -24,7 +24,7 @@ public class DoctorService {
     private final DoctorMapper doctorMapper;
 
     public Page<Doctor> getDoctors(Pageable pageable) {
-        return doctorRepository.findAll(pageable);
+        return doctorRepository.findAllWithInstitutions(pageable);
     }
     @Transactional
     public Doctor addDoctor(DoctorEditDTO doctorEditDTO) {

@@ -21,13 +21,16 @@ public class Visit {
     @Column(name = "endDate", length = 50, nullable = false)
     private LocalDateTime endDate;
 
+    @ManyToOne
     private Patient patient;
 
+    @ManyToOne
     private Doctor doctor;
 
+    @ManyToOne
     private Institution institution;
 
-    public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution){
+    public static Visit of(VisitEditDTO visitEditDTO, Doctor doctor, Institution institution) {
         Visit visit = new Visit();
         visit.setDoctor(doctor);
         visit.setInstitution(institution);
