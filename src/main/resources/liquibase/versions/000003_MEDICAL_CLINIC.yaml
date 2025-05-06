@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: ryszard
+      changes:
+        - createTable:
+            tableName: DOCTOR_INSTITUTION
+            columns:
+              - column:
+                  name: DOCTOR_ID
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: INSTITUTION_ID
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: DOCTOR_INSTITUTION
+            baseColumnNames: DOCTOR_ID
+            constraintName: fk_doctor_institution_doctor
+            referencedTableName: DOCTORS
+            referencedColumnNames: ID
+        - addForeignKeyConstraint:
+            baseTableName: DOCTOR_INSTITUTION
+            baseColumnNames: INSTITUTION_ID
+            constraintName: fk_doctor_institution_institution
+            referencedTableName: INSTITUTION
+            referencedColumnNames: ID
