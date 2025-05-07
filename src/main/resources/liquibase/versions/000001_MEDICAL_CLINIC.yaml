@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ryszard
+      changes:
+        - createTable:
+            tableName: DOCTORS
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: DOCTOR_NAME
+                  type: varchar(255)
+              - column:
+                  name: DOCTOR_LAST_NAME
+                  type: varchar(255)
+              - column:
+                  name: DOCTOR_EMAIL
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: DOCTOR_PASSWORD
+                  type: varchar(255)
+              - column:
+                  name: SPECIALIZATION
+                  type: varchar(255)
