@@ -28,3 +28,111 @@ databaseChangeLog:
             constraintName: fk_doctor_institution_institution
             referencedTableName: INSTITUTION
             referencedColumnNames: ID
+
+  - changeSet:
+      id: 4
+      author: ryszard
+      changes:
+        - createTable:
+            tableName: PATIENTS
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: PATIENT_NAME
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_LAST_NAME
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_EMAIL
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: PATIENT_PASSWORD
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_ID_CARD_NO
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_PHONE_NO
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_BIRTHDAY
+                  type: date
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: ryszard
+      changes:
+        - createTable:
+            tableName: VISIT
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: startDate
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: endDate
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: institution_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_visit_patient
+            baseTableName: VISIT
+            baseColumnNames: patient_id
+            referencedTableName: PATIENTS
+            referencedColumnNames: ID
+        - addForeignKeyConstraint:
+            constraintName: fk_visit_doctor
+            baseTableName: VISIT
+            baseColumnNames: doctor_id
+            referencedTableName: DOCTORS
+            referencedColumnNames: ID
+        - addForeignKeyConstraint:
+            constraintName: fk_visit_institution
+            baseTableName: VISIT
+            baseColumnNames: institution_id
+            referencedTableName: INSTITUTION
+            referencedColumnNames: ID

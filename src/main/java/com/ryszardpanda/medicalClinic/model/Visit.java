@@ -16,9 +16,9 @@ public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "startDate", length = 50, nullable = false)
+    @Column(name = "STARTDATE", length = 50, nullable = false)
     private LocalDateTime startDate;
-    @Column(name = "endDate", length = 50, nullable = false)
+    @Column(name = "ENDDATE", length = 50, nullable = false)
     private LocalDateTime endDate;
 
     @ManyToOne
